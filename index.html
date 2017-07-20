@@ -12,7 +12,7 @@
         <title>ID List Player</title>
         <link rel="shortcut icon" href="https://raw.githubusercontent.com/Pedro-Otavio/Resources/master/favicon.png" type="image/x-icon">
         <link rel="icon" href="https://raw.githubusercontent.com/Pedro-Otavio/Resources/master/favicon.png" type="image/x-icon">
-        <link rel="stylesheet" href="https://cdn.rawgit.com/Pedro-Otavio/Resources/9f732396c1c685c91c1338e1f48ce98acecea618/one.css">
+        <link rel="stylesheet" href="https://cdn.rawgit.com/Pedro-Otavio/Resources/d2c1e19aee64818fa6f0b67ba41a64c7e5c81e8b/one.css">
     </head>
     <body>
         <div class="container fullH">
@@ -24,15 +24,17 @@
             </div>
             <div class="d-2"></div>
             <div class="row center">
-                <iframe id="player" width="896" height="504" src="https://www.youtube.com/embed/_fTC_Ud_k3U?autoplay=1&start=455&enablejsapi=1&rel=0" frameborder="0"></iframe>
+                <iframe id="player" width="896" height="504" src="https://www.youtube.com/embed/_fTC_Ud_k3U?autoplay=1&start=455&enablejsapi=1&rel=0&hl=en" frameborder="0"></iframe>
             </div>
             <div class="d-2"></div>
             <div class="row center">
                 <div class="col-md-6 col-md-offset-3">
                     <label id="labelFileInput" for="fileInput" class="btn">Load IDs.txt</label>
                     <input id="fileInput" class="hidden" type="file" onchange="ready();"/>
-                    <label id="labelShuffle" for="shuffle" class="btn disabled">Shuffle</label>
-                    <button id="shuffle" class="hidden" onclick="start();">Shuffle</button>
+                    <label id="labelShuffle" for="shuffle" class="btn disabled cursor-def">Shuffle</label>
+                    <button id="shuffle" class="hidden" onclick="start();" disabled>Shuffle</button>
+                    <label id="labelMinquality" for="minquality" class="btn">Min quality</label>
+                    <button id="minquality" class="hidden" onclick="toggleMinQuality();">Shuffle</button>
                 </div>
             </div>
             <div id="errow" class="row center" hidden>
