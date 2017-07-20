@@ -11,9 +11,19 @@ function onYouTubeIframeAPIReady() {
     }, 1500);
 }
 
+var minQual = false;
+
+function toggleMinQuality() {
+    minQual = !minQual;
+    document.getElementById("labelMinquality").classList.toggle("cursor-scr");
+    document.getElementById("labelMinquality").classList.toggle("cursor-cel");
+}
+
 function quality() {
-    player.setPlaybackQuality("small");
-    player.setPlaybackQuality("tiny");
+    if (minQual) {
+        player.setPlaybackQuality("small");
+        player.setPlaybackQuality("tiny");
+    }
 }
 
 function playerChanged(event) {
