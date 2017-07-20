@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- jQuery -->
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Stuff -->
+        <title>IDList Player</title>
+        <link rel="shortcut icon" href="https://raw.githubusercontent.com/Pedro-Otavio/Resources/master/favicon.png" type="image/x-icon">
+        <link rel="icon" href="https://raw.githubusercontent.com/Pedro-Otavio/Resources/master/favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="https://cdn.rawgit.com/Pedro-Otavio/Resources/98e06adc5607b6cd00d6dfa7ddc89ed3ad82ea70/one.css">
+    </head>
+    <body>
+        <div class="container fullH">
+            <div class="d-10"></div>
+            <div class="row center">
+                <div class="col-md-12">
+                    <h1>Reads <a href="https://pedro-otavio.github.io/IDEx/">extracted IDs</a> from <a href="https://www.youtube.com/">youtube</a> playlists</h1>
+                </div>
+            </div>
+            <div class="d-2"></div>
+            <div class="row center">
+                <iframe id="player" width="896" height="504" src="https://www.youtube.com/embed/videoseries?list=PLFgquLnL59alcyTM2lkWJU34KtfPXQDaX&enablejsapi=1&rel=0" frameborder="0"></iframe>
+            </div>
+            <div class="d-2"></div>
+            <div class="row center">
+                <div class="col-md-6 col-md-offset-3">
+                    <label id="labelFileInput" for="fileInput" class="btn">Load IDs.txt</label>
+                    <input id="fileInput" class="hidden" type="file" onchange="ready();"/>
+                    <label id="labelShuffle" for="shuffle" class="btn disabled">Shuffle</label>
+                    <button id="shuffle" class="hidden" onclick="start();">Shuffle</button>
+                </div>
+            </div>
+            <div id="errow" class="row center" hidden>
+                <div class="col-md-12">
+                    <h2 style="color: #FF0000">ERROR</h2>
+                </div>
+            </div>
+        </div>
+        <script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
+        <script src="IDListPlayer.js" type="text/javascript"></script>
+    </body>
+</html>
