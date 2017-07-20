@@ -15,8 +15,7 @@ var minQual = false;
 
 function toggleMinQuality() {
     minQual = !minQual;
-    document.getElementById("labelMinquality").classList.toggle("cursor-asc");
-    document.getElementById("labelMinquality").classList.toggle("cursor-cel");
+    document.getElementById("labelMinquality").classList.toggle("disabled");
 }
 
 function quality() {
