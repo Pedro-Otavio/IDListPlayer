@@ -32,9 +32,6 @@ function playerChanged(event) {
         case 0:
             next();
             break;
-        case 1:
-            setTitle();
-            break;
         case 3:
             quality();
             break;
@@ -79,12 +76,8 @@ function start() {
 
 function next() {
     player.loadVideoById(IDList[index]);
+    title.innerHTML = player.getVideoData().title;
     index++;
     if (index >= max)
         index = 0;
-}
-
-function setTitle() {
-    var vidTitle = document.getElementsByClassName("ytp-title-link yt-uix-sessionlink")[0];
-    title.innerHTML = vidTitle.innerHTML;
 }
