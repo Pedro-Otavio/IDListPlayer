@@ -82,11 +82,9 @@ function next() {
 }
 
 function setTitle() {
-    try {
-        title.innerHTML = player.getVideoData().title;
-    } catch (e) {
+    if (title.innerHTML = player.getVideoData().title) {
+        window.clearInterval(titleSwitcher);
+    } else {
         title.innerHTML = "ID List Player";
     }
-    if (title.innerHTML === player.getVideoData().title)
-        window.clearInterval(titleSwitcher);
 }
