@@ -4,7 +4,6 @@ var minQual = false;
 var IDList;
 var index;
 var max;
-var titleSwitcher;
 
 function onYouTubeIframeAPIReady() {
     window.setTimeout(function () {
@@ -34,7 +33,6 @@ function playerChanged(event) {
     switch (event.data) {
         case 0:
             next();
-            titleSwitcher = window.setInterval(setTitle(), 500);
             break;
         case 3:
             quality();
@@ -71,7 +69,7 @@ function readIDs(fileIDs) {
 function start() {
     shuffle(IDList);
     index = 0;
-    titleSwitcher = window.setInterval(setTitle(), 500);
+    window.setInterval(setTitle(), 500);
     next();
 }
 
@@ -85,9 +83,7 @@ function next() {
 function setTitle() {
     try{
         title.innerHTML = player.getVideoData().title;
-        window.clearInterval(titleSwitcher);
     } catch (e) {
         title.innerHTML = "ID List Player";
-        titleSwitcher = window.setInterval(setTitle(), 500);
     }
 }
