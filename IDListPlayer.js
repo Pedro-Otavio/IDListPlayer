@@ -71,6 +71,7 @@ function readIDs(fileIDs) {
 function start() {
     shuffle(IDList);
     index = 0;
+    titleSwitcher = window.setInterval(setTitle(), 500);
     next();
 }
 
@@ -87,6 +88,6 @@ function setTitle() {
         window.clearInterval(titleSwitcher);
     } catch (e) {
         title.innerHTML = "ID List Player";
-        console.log("error" + e);
+        titleSwitcher = window.setInterval(setTitle(), 500);
     }
 }
