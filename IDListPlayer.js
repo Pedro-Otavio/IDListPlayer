@@ -65,20 +65,29 @@ function ready() {
 
 function readIDs(fileIDs) {
     IDList = fileIDs.split('~');
-    max = IDList.length;
+    max = IDList.length - 1;
 }
 
 function start() {
     shuffle(IDList);
     index = 0;
-    next();
+    player.loadVideoById(IDList[index]);
 }
 
 function next() {
-    player.loadVideoById(IDList[index]);
     index++;
-    if (index >= max)
+    if (index > max) {
         index = 0;
+    }
+    player.loadVideoById(IDList[index]);
+}
+
+function previous() {
+    index--;
+    if (index < 0) {
+        index = max;
+    }
+    player.loadVideoById(IDList[index]);
 }
 
 function setTitle() {
