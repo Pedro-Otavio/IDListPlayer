@@ -85,5 +85,4 @@ function setTitle() {
     title.innerHTML = "ID List Player";
     while (!player) {console.log("waiting")}
     title.innerHTML = player.getVideoData().title;
-    window.clearInterval(loopSetTitle);
 }
