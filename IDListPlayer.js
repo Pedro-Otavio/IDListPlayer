@@ -76,8 +76,12 @@ function start() {
 
 function next() {
     player.loadVideoById(IDList[index]);
-    title.innerHTML = player.getVideoData().title;
+    window.setTimeout(setTitle(), 500);
     index++;
     if (index >= max)
         index = 0;
+}
+
+function setTitle() {
+    title.innerHTML = player.getVideoData().title;
 }
