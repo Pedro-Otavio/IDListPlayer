@@ -76,7 +76,7 @@ function start() {
 
 function next() {
     player.loadVideoById(IDList[index]);
-    title.innerHTML = document.getElementsByClassName("ytp-title-link")[0].innerHTML;
+    title.innerHTML = (document.getElementsByClassName("ytp-title-link")[0]).innerHTML;
     index++;
     if (index >= max)
         index = 0;
