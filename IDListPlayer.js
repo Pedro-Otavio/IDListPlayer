@@ -81,6 +81,7 @@ function next() {
 }
 
 function setTitle() {
+    console.log("setTitle");
     if (player.getVideoData()) {
         title.innerHTML = player.getVideoData().title;
     } else {
