@@ -1,4 +1,5 @@
 var player;
+var title = document.getElementsByTagName("TITLE")[0];
 
 function onYouTubeIframeAPIReady() {
     window.setTimeout(function () {
@@ -16,6 +17,7 @@ var minQual = false;
 function toggleMinQuality() {
     minQual = !minQual;
     document.getElementById("labelMinquality").classList.toggle("disabled");
+    quality();
 }
 
 function quality() {
@@ -74,6 +76,7 @@ function start() {
 
 function next() {
     player.loadVideoById(IDList[index]);
+    title.innerHTML = document.getElementsByClassName("ytp-title-link")[0].innerHTML;
     index++;
     if (index >= max)
         index = 0;
