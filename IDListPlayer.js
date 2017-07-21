@@ -33,6 +33,9 @@ function playerChanged(event) {
         case 0:
             next();
             break;
+        case 1:
+            setTitle();
+            break;
         case 3:
             quality();
             break;
@@ -77,8 +80,11 @@ function start() {
 
 function next() {
     player.loadVideoById(IDList[index]);
-    title.innerHTML = vidTitle.innerHTML;
     index++;
     if (index >= max)
         index = 0;
+}
+
+function setTitle() {
+    title.innerHTML = vidTitle.innerHTML;
 }
