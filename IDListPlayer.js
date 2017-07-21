@@ -1,5 +1,6 @@
 var player;
 var title = document.getElementsByTagName("TITLE")[0];
+var vidTitle = document.getElementsByClassName("ytp-title-link yt-uix-sessionlink")[0];
 
 function onYouTubeIframeAPIReady() {
     window.setTimeout(function () {
@@ -76,7 +77,7 @@ function start() {
 
 function next() {
     player.loadVideoById(IDList[index]);
-    title.innerHTML = document.getElementsByClassName("ytp-title-link yt-uix-sessionlink")[0].innerHTML;
+    title.innerHTML = vidTitle.innerHTML;
     index++;
     if (index >= max)
         index = 0;
