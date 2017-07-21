@@ -82,7 +82,7 @@ function next() {
 
 function setTitle() {
     console.log("setTitle");
-    if (player.getVideoData()) {
+    if (player) {
         title.innerHTML = player.getVideoData().title;
     } else {
         title.innerHTML = "ID List Player";
