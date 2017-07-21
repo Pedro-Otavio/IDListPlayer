@@ -69,7 +69,7 @@ function readIDs(fileIDs) {
 function start() {
     shuffle(IDList);
     index = 0;
-    window.setInterval(setTitle(), 500);
+    window.setInterval(setTitle, 500);
     next();
 }
 
