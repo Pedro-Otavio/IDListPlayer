@@ -1,6 +1,5 @@
 var player;
 var title = document.getElementsByTagName("TITLE")[0];
-var vidTitle = document.getElementsByClassName("ytp-title-link yt-uix-sessionlink")[0];
 
 function onYouTubeIframeAPIReady() {
     window.setTimeout(function () {
@@ -86,5 +85,6 @@ function next() {
 }
 
 function setTitle() {
+    var vidTitle = document.getElementsByClassName("ytp-title-link yt-uix-sessionlink")[0];
     title.innerHTML = vidTitle.innerHTML;
 }
