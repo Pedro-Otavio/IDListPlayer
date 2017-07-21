@@ -82,7 +82,8 @@ function next() {
 }
 
 function setTitle() {
-    if (title.innerHTML = player.getVideoData().title) {
+    try{title.innerHTML = player.getVideoData().title}catch(e){console.log("e")}
+    if (title.innerHTML === player.getVideoData().title) {
         window.clearInterval(titleSwitcher);
     } else {
         title.innerHTML = "ID List Player";
