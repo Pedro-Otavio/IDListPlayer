@@ -86,7 +86,7 @@ function setTitle() {
     try {
         title.innerHTML = player.getVideoData().title;
         window.clearInterval(titleSwitcher);
-    } catch {
+    } catch (e) {
         title.innerHTML = "ID List Player";
     }
 }
