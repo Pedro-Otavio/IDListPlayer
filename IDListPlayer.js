@@ -15,7 +15,6 @@ function onYouTubeIframeAPIReady() {
             }
         });
     }, 1500);
-    titleSwitcher = window.setInterval(setTitle(), 500);
 }
 
 function toggleMinQuality() {
@@ -85,8 +84,9 @@ function next() {
 function setTitle() {
     try {
         title.innerHTML = player.getVideoData().title;
-        window.clearInterval(titleSwitcher);
     } catch (e) {
         title.innerHTML = "ID List Player";
     }
+    if (title.innerHTML === player.getVideoData().title)
+        window.clearInterval(titleSwitcher);
 }
