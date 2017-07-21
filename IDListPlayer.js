@@ -1,5 +1,10 @@
 var player;
 var title = document.getElementsByTagName("TITLE")[0];
+var minQual = false;
+var IDList;
+var index;
+var max;
+var titleSwitcher;
 
 function onYouTubeIframeAPIReady() {
     window.setTimeout(function () {
@@ -10,9 +15,8 @@ function onYouTubeIframeAPIReady() {
             }
         });
     }, 1500);
+    titleSwitcher = window.setInterval(setTitle(), 500);
 }
-
-var minQual = false;
 
 function toggleMinQuality() {
     minQual = !minQual;
@@ -31,6 +35,7 @@ function playerChanged(event) {
     switch (event.data) {
         case 0:
             next();
+            titleSwitcher = window.setInterval(setTitle(), 500);
             break;
         case 3:
             quality();
@@ -40,10 +45,6 @@ function playerChanged(event) {
 
 var rnd = Math.random;
 function shuffle(arr,len,i,k){len = arr.length;while(len)i=rnd()*len--|0,k=arr[len],arr[len]=arr[i],arr[i]=k;}
-
-var IDList;
-var index;
-var max;
 
 var reader = new FileReader();
 reader.onloadend = function (event) {
@@ -76,12 +77,16 @@ function start() {
 
 function next() {
     player.loadVideoById(IDList[index]);
-    window.setTimeout(setTitle(), 500);
     index++;
     if (index >= max)
         index = 0;
 }
 
 function setTitle() {
-    title.innerHTML = player.getVideoData().title;
+    try {
+        title.innerHTML = player.getVideoData().title;
+        window.clearInterval(titleSwitcher);
+    } catch {
+        title.innerHTML = "ID List Player";
+    }
 }
