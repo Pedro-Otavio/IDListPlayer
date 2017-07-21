@@ -34,6 +34,8 @@ function playerChanged(event) {
         case 0:
             next();
             break;
+        case 1:
+            setTitle();
         case 3:
             quality();
             break;
@@ -69,7 +71,6 @@ function readIDs(fileIDs) {
 function start() {
     shuffle(IDList);
     index = 0;
-    window.setInterval(setTitle, 500);
     next();
 }
 
@@ -81,10 +82,8 @@ function next() {
 }
 
 function setTitle() {
-    console.log("setTitle");
-    if (player) {
-        title.innerHTML = player.getVideoData().title;
-    } else {
-        title.innerHTML = "ID List Player";
-    }
+    title.innerHTML = "ID List Player";
+    while (!player) {console.log("waiting")}
+    title.innerHTML = player.getVideoData().title;
+    window.clearInterval(loopSetTitle);
 }
