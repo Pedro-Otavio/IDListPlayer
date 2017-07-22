@@ -36,6 +36,7 @@ function playerChanged(event) {
             break;
         case 1:
             setTitle();
+            break;
         case 3:
             quality();
             break;
@@ -87,6 +88,11 @@ function previous() {
     if (index < 0) {
         index = max;
     }
+    player.loadVideoById(IDList[index]);
+}
+
+function playVideoAt(i) {
+    index = i;
     player.loadVideoById(IDList[index]);
 }
 
