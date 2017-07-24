@@ -12,7 +12,7 @@
         <title>ID List Player</title>
         <link rel="shortcut icon" href="https://raw.githubusercontent.com/Pedro-Otavio/Resources/master/favicon.png" type="image/x-icon">
         <link rel="icon" href="https://raw.githubusercontent.com/Pedro-Otavio/Resources/master/favicon.png" type="image/x-icon">
-        <link rel="stylesheet" href="https://cdn.rawgit.com/Pedro-Otavio/Resources/d2c1e19aee64818fa6f0b67ba41a64c7e5c81e8b/one.css">
+        <link rel="stylesheet" href="https://cdn.rawgit.com/Pedro-Otavio/Resources/5f1dd290016d7194684a664b94bbc7c20a3a1359/one.css">
     </head>
     <body>
         <div class="container fullH">
@@ -24,21 +24,41 @@
             </div>
             <div class="d-2"></div>
             <div class="row center">
-                <label id="labelPrevious" for="previous" class="btn">Previous</label>
-                <button id="previous" class="hidden" onclick="previous();">Previous</button>
-                <iframe id="player" width="896" height="504" src="https://www.youtube.com/embed/_fTC_Ud_k3U?autoplay=1&start=455&enablejsapi=1&rel=0&hl=en&modestbranding=1" frameborder="0"></iframe>
-                <label id="labelNext" for="next" class="btn">Next</label>
-                <button id="next" class="hidden" onclick="next();">Next</button>
+                <label id="labelPrevious" for="previous" title="Previous" class="btn disabled"><span class="glyphicon glyphicon-arrow-left"></span></label>
+                <button id="previous" class="hidden" onclick="previous();" disabled>Previous();</button>
+                <iframe id="player" width="896" height="504" src="https://www.youtube.com/embed/_fTC_Ud_k3U?start=455&enablejsapi=1&rel=0&hl=en&modestbranding=1" frameborder="0"></iframe>
+                <label id="labelNext" for="next" title="Next" class="btn disabled"><span class="glyphicon glyphicon-arrow-right"></span></label>
+                <button id="next" class="hidden" onclick="next();" disabled>Next();</button>
             </div>
-            <div class="d-2"></div>
+			<div class="d-1"></div>
             <div class="row center">
                 <div class="col-md-6 col-md-offset-3">
-                    <label id="labelFileInput" for="fileInput" class="btn">Load IDs.txt</label>
-                    <input id="fileInput" class="hidden" type="file" onchange="ready();"/>
-                    <label id="labelShuffle" for="shuffle" class="btn disabled cursor-def">Shuffle</label>
-                    <button id="shuffle" class="hidden" onclick="start();" disabled>Shuffle</button>
-                    <label id="labelMinquality" for="minquality" class="btn">Min quality</label>
-                    <button id="minquality" class="hidden" onclick="toggleMinQuality();">Shuffle</button>
+                    <div class="form-inline">
+                        <input id="indexInput" class="inline form-control" style="width: 2.5em; padding: 0.4em 0.1em 0.4em 0.34em"/>
+                        <label id="labelJumpTo" for="jumpTo" title="Jump to" class="btn disabled"><span class="glyphicon glyphicon-search"></span></label>
+                        <button id="jumpTo" class="hidden" onclick="jumpTo(Number(document.getElementById('indexInput').value) - 1);" disabled>JumpTo();</button>
+                        <b>&nbsp;&nbsp;</b>
+                        <label id="labelShuffle" for="shuffle" title="Shuffle" class="btn disabled"><span class="glyphicon glyphicon-random"></span></label>
+						<button id="shuffle" class="hidden" onclick="shuffleList();" disabled>Shuffle();</button>
+                    </div>
+                </div>
+            </div>
+			<div class="d-1"></div>
+            <div class="row center">
+                <div class="col-md-6 col-md-offset-3">
+                    <p class="lead" style="display: inline;"><span id="index" title="Current video's index" style="color: #CFCFCF;">None</span></p>
+                </div>
+            </div>
+            <div class="d-1"></div>
+            <div class="row center">
+                <div class="col-md-6 col-md-offset-3">
+                    <label id="labelFileInput" for="fileInput" title="Load ID List file" class="btn"><span class="glyphicon glyphicon-folder-open"></span></label>
+                    <input id="fileInput" class="hidden" type="file" onchange="ready();"/><b class="hidden">Ready();</b>
+					<label id="labelSave" for="save" title="Create ID List file for this playlist in the current order" class="btn"><span class="glyphicon glyphicon-save-file"></span></label>
+                    <button id="save" class="hidden" onclick="save();">Save();</button>
+					<a id="download" class="btn hidden"><span class="glyphicon glyphicon-download-alt"></span></a>
+                    <label id="labelMinquality" for="minquality" title="Toggle minimum quality mode" class="btn"><span class="glyphicon glyphicon-hd-video"></span></label>
+                    <button id="minquality" class="hidden" onclick="toggleMinQuality();">ToggleMinQuality();</button>
                 </div>
             </div>
             <div id="errow" class="row center" hidden>

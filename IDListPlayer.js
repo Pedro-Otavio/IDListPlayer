@@ -2,7 +2,7 @@ var player;
 var title = document.getElementsByTagName("TITLE")[0];
 var minQual = false;
 var IDList;
-var index;
+var index = 0;
 var max;
 
 function onYouTubeIframeAPIReady() {
@@ -14,19 +14,6 @@ function onYouTubeIframeAPIReady() {
             }
         });
     }, 1500);
-}
-
-function toggleMinQuality() {
-    minQual = !minQual;
-    document.getElementById("labelMinquality").classList.toggle("disabled");
-    quality();
-}
-
-function quality() {
-    if (minQual) {
-        player.setPlaybackQuality("small");
-        player.setPlaybackQuality("tiny");
-    }
 }
 
 function playerChanged(event) {
@@ -43,8 +30,34 @@ function playerChanged(event) {
     }
 }
 
-var rnd = Math.random;
-function shuffle(arr,len,i,k){len = arr.length;while(len)i=rnd()*len--|0,k=arr[len],arr[len]=arr[i],arr[i]=k;}
+function quality() {
+    if (minQual) {
+        player.setPlaybackQuality("small");
+        player.setPlaybackQuality("tiny");
+    }
+}
+
+function toggleMinQuality() {
+    minQual = !minQual;
+    document.getElementById("labelMinquality").classList.toggle("disabled");
+    quality();
+}
+
+function setTitle() {
+    title.innerHTML = "ID List Player";
+    title.innerHTML = player.getVideoData().title;
+}
+
+function enableBtns() {
+	document.getElementById("previous").disabled = false;
+    document.getElementById("next").disabled = false;
+	document.getElementById("jumpTo").disabled = false;
+	document.getElementById("shuffle").disabled = false;
+    document.getElementById("labelPrevious").classList.remove("disabled");
+	document.getElementById("labelNext").classList.remove("disabled");
+	document.getElementById("labelJumpTo").classList.remove("disabled");
+	document.getElementById("labelShuffle").classList.remove("disabled");
+}
 
 var reader = new FileReader();
 reader.onloadend = function (event) {
@@ -54,8 +67,9 @@ reader.onloadend = function (event) {
         console.error("FileReader error code " + error.code);
     } else {
         readIDs(event.target.result);
-        document.getElementById("shuffle").disabled = false;
-        document.getElementById("labelShuffle").setAttribute("class", "btn");
+		enableBtns();
+		setIndex(0);
+		player.cueVideoById(IDList[0]);
     }
 };
 
@@ -69,34 +83,54 @@ function readIDs(fileIDs) {
     max = IDList.length - 1;
 }
 
-function start() {
+var rnd = Math.random;
+function shuffle(arr,len,i,k){len = arr.length;while(len)i=rnd()*len--|0,k=arr[len],arr[len]=arr[i],arr[i]=k;}
+
+function shuffleList() {
     shuffle(IDList);
-    index = 0;
-    player.loadVideoById(IDList[index]);
+	jumpTo(0);
 }
 
 function next() {
-    index++;
-    if (index > max) {
-        index = 0;
-    }
+    setIndex(index + 1);
     player.loadVideoById(IDList[index]);
 }
 
 function previous() {
-    index--;
-    if (index < 0) {
+    setIndex(index - 1);
+    player.loadVideoById(IDList[index]);
+}
+
+function jumpTo(i) {
+    setIndex(i);
+    player.loadVideoById(IDList[index]);
+}
+
+function setIndex(i) {
+	index = i;
+	if (index < 0) {
         index = max;
+    } else if (index > max) {
+        index = 0;
     }
-    player.loadVideoById(IDList[index]);
+	document.getElementById("index").innerHTML = index + 1;
 }
 
-function playVideoAt(i) {
-    index = i;
-    player.loadVideoById(IDList[index]);
+function save() {
+	var IDs = IDList.join('~');
+	var blob = new Blob([IDs], {type: "text/plain"});
+    var url = window.URL.createObjectURL(blob);
+	var a = document.getElementById("download");
+	
+	a.setAttribute("href", url);
+    a.setAttribute("download", "ShuffledIDs.txt");
+    a.setAttribute("onclick", "downloaded('" + url + "')");
+	a.classList.remove("hidden");
 }
 
-function setTitle() {
-    title.innerHTML = "ID List Player";
-    title.innerHTML = player.getVideoData().title;
+function downloaded(url) {
+    window.setTimeout(function () {
+        window.URL.revokeObjectURL(url);
+    }, 500);
+	document.getElementById("download").classList.add("hidden");
 }
