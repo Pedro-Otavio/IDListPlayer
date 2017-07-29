@@ -20,9 +20,10 @@ function playerChanged(event) {
     switch (event.data) {
         case 0:
             next();
+            title.innerHTML = "ID List Player";
             break;
         case 1:
-            setTitle();
+            title.innerHTML = player.getVideoData().title;
             break;
         case 3:
             quality();
@@ -43,20 +44,15 @@ function toggleMinQuality() {
     quality();
 }
 
-function setTitle() {
-    title.innerHTML = "ID List Player";
-    title.innerHTML = player.getVideoData().title;
-}
-
 function enableBtns() {
-	document.getElementById("previous").disabled = false;
+    document.getElementById("previous").disabled = false;
     document.getElementById("next").disabled = false;
-	document.getElementById("jumpTo").disabled = false;
-	document.getElementById("shuffle").disabled = false;
+    document.getElementById("jumpTo").disabled = false;
+    document.getElementById("shuffle").disabled = false;
     document.getElementById("labelPrevious").classList.remove("disabled");
-	document.getElementById("labelNext").classList.remove("disabled");
-	document.getElementById("labelJumpTo").classList.remove("disabled");
-	document.getElementById("labelShuffle").classList.remove("disabled");
+    document.getElementById("labelNext").classList.remove("disabled");
+    document.getElementById("labelJumpTo").classList.remove("disabled");
+    document.getElementById("labelShuffle").classList.remove("disabled");
 }
 
 var reader = new FileReader();
@@ -88,7 +84,7 @@ function shuffle(arr,len,i,k){len = arr.length;while(len)i=rnd()*len--|0,k=arr[l
 
 function shuffleList() {
     shuffle(IDList);
-	jumpTo(0);
+    jumpTo(0);
 }
 
 function next() {
@@ -107,25 +103,25 @@ function jumpTo(i) {
 }
 
 function setIndex(i) {
-	index = i;
-	if (index < 0) {
+    index = i;
+    if (index < 0) {
         index = max;
     } else if (index > max) {
         index = 0;
     }
-	document.getElementById("index").innerHTML = index + 1;
+    document.getElementById("index").innerHTML = index + 1;
 }
 
 function save() {
-	var IDs = IDList.join('~');
-	var blob = new Blob([IDs], {type: "text/plain"});
+    var IDs = IDList.join('~');
+    var blob = new Blob([IDs], {type: "text/plain"});
     var url = window.URL.createObjectURL(blob);
-	var a = document.getElementById("download");
-	
-	a.setAttribute("href", url);
+    var a = document.getElementById("download");
+
+    a.setAttribute("href", url);
     a.setAttribute("download", "ShuffledIDs.txt");
     a.setAttribute("onclick", "downloaded('" + url + "')");
-	a.classList.remove("hidden");
+    a.classList.remove("hidden");
 }
 
 function downloaded(url) {
