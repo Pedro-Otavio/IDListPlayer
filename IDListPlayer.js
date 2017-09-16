@@ -16,8 +16,9 @@ function onYouTubeIframeAPIReady() {
     }, 1500);
     let plr = document.getElementById('player');
     let w = Math.min(document.documentElement.clientWidth, 768);
+    let h = Math.floor(w * 9 / 16);
     plr.setAttribute('width', w);
-    plr.setAttribute('height', w * 9 / 16);
+    plr.setAttribute('height', h);
 }
 
 function playerChanged(event) {
