@@ -1,73 +1,79 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <!-- jQuery -->
-        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" crossorigin="anonymous">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- Stuff -->
-        <title>ID List Player</title>
-        <link rel="shortcut icon" href="https://raw.githubusercontent.com/Pedro-Otavio/Resources/master/favicon.png" type="image/x-icon">
-        <link rel="icon" href="https://raw.githubusercontent.com/Pedro-Otavio/Resources/master/favicon.png" type="image/x-icon">
-        <link rel="stylesheet" href="https://cdn.rawgit.com/Pedro-Otavio/Resources/5f1dd290016d7194684a664b94bbc7c20a3a1359/one.css">
-    </head>
-    <body>
-        <div class="container fullH">
-            <div class="d-10"></div>
-            <div class="row center">
-                <div class="col-md-12">
-                    <h1>Plays <a href="https://pedro-otavio.github.io/IDEx/">ID Lists</a> from <a href="https://www.youtube.com/">youtube</a> playlists</h1>
-                </div>
+
+<head>
+    <!-- jQuery -->
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Stuff -->
+    <title>ID List Player</title>
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/Pedro-Otavio/Resources/master/favicon.png" type="image/x-icon">
+    <link rel="icon" href="https://raw.githubusercontent.com/Pedro-Otavio/Resources/master/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/Pedro-Otavio/Resources/5f1dd290016d7194684a664b94bbc7c20a3a1359/one.css">
+</head>
+
+<body>
+    <div class="container fullH">
+        <div class="d-10"></div>
+        <div class="row center">
+            <div class="col-md-12">
+                <h1>Plays <a href="https://pedro-otavio.github.io/IDEx/">ID Lists</a> from <a href="https://www.youtube.com/">youtube</a> playlists</h1>
             </div>
-            <div class="d-2"></div>
-            <div class="row center">
+        </div>
+        <div class="d-2"></div>
+        <div class="row center">
+            <iframe id="player" src="https://www.youtube-nocookie.com/embed/k3PVDKNupbI?enablejsapi=1&rel=0&hl=en&modestbranding=1" frameborder="0"></iframe>
+        </div>
+        <div class="d-1"></div>
+        <div class="row center">
+
+        </div>
+        <div class="row center">
+            <div class="col-md-6 col-md-offset-3">
                 <label id="labelPrevious" for="previous" title="Previous" class="btn disabled"><span class="glyphicon glyphicon-arrow-left"></span></label>
                 <button id="previous" class="hidden" onclick="previous();" disabled>Previous();</button>
-                <iframe id="player" width="896" height="504" src="https://www.youtube-nocookie.com/embed/k3PVDKNupbI?enablejsapi=1&rel=0&hl=en&modestbranding=1" frameborder="0"></iframe>
+                <b>&nbsp;&nbsp;&nbsp;</b>
+                <input id="indexInput" class="form-control" style="display: inline-block; width: 2.5em; padding: 0.4em 0.1em 0.4em 0.34em;">
+                <label id="labelJumpTo" for="jumpTo" title="Jump to" class="btn disabled"><span class="glyphicon glyphicon-search"></span></label>
+                <button id="jumpTo" class="hidden" onclick="jumpTo(Number(document.getElementById('indexInput').value) - 1);" disabled>JumpTo();</button>
+                <b>&nbsp;&nbsp;</b>
+                <label id="labelShuffle" for="shuffle" title="Shuffle" class="btn disabled"><span class="glyphicon glyphicon-random"></span></label>
+                <button id="shuffle" class="hidden" onclick="shuffleList();" disabled>Shuffle();</button>
+                <b>&nbsp;&nbsp;&nbsp;</b>
                 <label id="labelNext" for="next" title="Next" class="btn disabled"><span class="glyphicon glyphicon-arrow-right"></span></label>
                 <button id="next" class="hidden" onclick="next();" disabled>Next();</button>
             </div>
-			<div class="d-1"></div>
-            <div class="row center">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="form-inline">
-                        <input id="indexInput" class="inline form-control" style="width: 2.5em; padding: 0.4em 0.1em 0.4em 0.34em"/>
-                        <label id="labelJumpTo" for="jumpTo" title="Jump to" class="btn disabled"><span class="glyphicon glyphicon-search"></span></label>
-                        <button id="jumpTo" class="hidden" onclick="jumpTo(Number(document.getElementById('indexInput').value) - 1);" disabled>JumpTo();</button>
-                        <b>&nbsp;&nbsp;</b>
-                        <label id="labelShuffle" for="shuffle" title="Shuffle" class="btn disabled"><span class="glyphicon glyphicon-random"></span></label>
-						<button id="shuffle" class="hidden" onclick="shuffleList();" disabled>Shuffle();</button>
-                    </div>
-                </div>
-            </div>
-			<div class="d-1"></div>
-            <div class="row center">
-                <div class="col-md-6 col-md-offset-3">
-                    <p class="lead" style="display: inline;"><span id="index" title="Current video's index" style="color: #CFCFCF;">None</span></p>
-                </div>
-            </div>
-            <div class="d-1"></div>
-            <div class="row center">
-                <div class="col-md-6 col-md-offset-3">
-                    <label id="labelFileInput" for="fileInput" title="Load ID List file" class="btn"><span class="glyphicon glyphicon-folder-open"></span></label>
-                    <input id="fileInput" class="hidden" type="file" onchange="ready();"/><b class="hidden">Ready();</b>
-					<label id="labelSave" for="save" title="Create ID List file for this playlist in the current order" class="btn"><span class="glyphicon glyphicon-save-file"></span></label>
-                    <button id="save" class="hidden" onclick="save();">Save();</button>
-					<a id="download" class="btn hidden"><span class="glyphicon glyphicon-download-alt"></span></a>
-                    <label id="labelMinquality" for="minquality" title="Toggle minimum quality mode" class="btn"><span class="glyphicon glyphicon-hd-video"></span></label>
-                    <button id="minquality" class="hidden" onclick="toggleMinQuality();">ToggleMinQuality();</button>
-                </div>
-            </div>
-            <div id="errow" class="row center" hidden>
-                <div class="col-md-12">
-                    <h2 style="color: #FF0000">ERROR</h2>
-                </div>
+        </div>
+        <div class="d-1"></div>
+        <div class="row center">
+            <div class="col-md-6 col-md-offset-3">
+                <p class="lead" style="display: inline;"><span id="index" title="Current video's index" style="color: #CFCFCF;">None</span></p>
             </div>
         </div>
-        <script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
-        <script src="IDListPlayer.js" type="text/javascript"></script>
-    </body>
+        <div class="d-1"></div>
+        <div class="row center">
+            <div class="col-md-6 col-md-offset-3">
+                <label id="labelFileInput" for="fileInput" title="Load ID List file" class="btn"><span class="glyphicon glyphicon-folder-open"></span></label>
+                <input id="fileInput" class="hidden" type="file" onchange="ready();" /><b class="hidden">Ready();</b>
+                <label id="labelSave" for="save" title="Create ID List file for this playlist in the current order" class="btn"><span class="glyphicon glyphicon-save-file"></span></label>
+                <button id="save" class="hidden" onclick="save();">Save();</button>
+                <a id="download" class="btn hidden"><span class="glyphicon glyphicon-download-alt"></span></a>
+                <label id="labelMinquality" for="minquality" title="Toggle minimum quality mode" class="btn"><span class="glyphicon glyphicon-hd-video"></span></label>
+                <button id="minquality" class="hidden" onclick="toggleMinQuality();">ToggleMinQuality();</button>
+            </div>
+        </div>
+        <div id="errow" class="row center" hidden>
+            <div class="col-md-12">
+                <h2 style="color: #FF0000">ERROR</h2>
+            </div>
+        </div>
+    </div>
+    <script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
+    <script src="IDListPlayer.js" type="text/javascript"></script>
+</body>
+
 </html>
