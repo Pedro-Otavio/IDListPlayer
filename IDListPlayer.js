@@ -1,9 +1,9 @@
-var player;
-var title = document.getElementsByTagName("TITLE")[0];
-var minQual = false;
-var IDList;
-var index = 0;
-var max;
+let player;
+let title = document.getElementById('title');
+let minQual = false;
+let IDList;
+let index = 0;
+let max;
 
 function onYouTubeIframeAPIReady() {
     window.setTimeout(function () {
@@ -14,6 +14,10 @@ function onYouTubeIframeAPIReady() {
             }
         });
     }, 1500);
+    let plr = document.getElementById('player');
+    let w = Math.min(document.documentElement.clientWidth, 768);
+    plr.setAttribute('width', w);
+    plr.setAttribute('height', w * 9 / 16);
 }
 
 function playerChanged(event) {
@@ -33,44 +37,44 @@ function playerChanged(event) {
 
 function quality() {
     if (minQual) {
-        player.setPlaybackQuality("small");
-        player.setPlaybackQuality("tiny");
+        player.setPlaybackQuality('small');
+        player.setPlaybackQuality('tiny');
     }
 }
 
 function toggleMinQuality() {
     minQual = !minQual;
-    document.getElementById("labelMinquality").classList.toggle("disabled");
+    document.getElementById('labelMinquality').classList.toggle('disabled');
     quality();
 }
 
 function enableBtns() {
-    document.getElementById("previous").disabled = false;
-    document.getElementById("next").disabled = false;
-    document.getElementById("jumpTo").disabled = false;
-    document.getElementById("shuffle").disabled = false;
-    document.getElementById("labelPrevious").classList.remove("disabled");
-    document.getElementById("labelNext").classList.remove("disabled");
-    document.getElementById("labelJumpTo").classList.remove("disabled");
-    document.getElementById("labelShuffle").classList.remove("disabled");
+    document.getElementById('previous').disabled = false;
+    document.getElementById('next').disabled = false;
+    document.getElementById('jumpTo').disabled = false;
+    document.getElementById('shuffle').disabled = false;
+    document.getElementById('labelPrevious').classList.remove('disabled');
+    document.getElementById('labelNext').classList.remove('disabled');
+    document.getElementById('labelJumpTo').classList.remove('disabled');
+    document.getElementById('labelShuffle').classList.remove('disabled');
 }
 
-var reader = new FileReader();
+let reader = new FileReader();
 reader.onloadend = function (event) {
-    var error = event.target.error;
+    let error = event.target.error;
     if (error !== null) {
-        document.getElementById("errow").hidden = false;
+        document.getElementById('errow').hidden = false;
         console.error("FileReader error code " + error.code);
     } else {
         readIDs(event.target.result);
-		enableBtns();
-		setIndex(0);
-		player.cueVideoById(IDList[0]);
+        enableBtns();
+        setIndex(0);
+        player.cueVideoById(IDList[0]);
     }
 };
 
 function ready() {
-    var IDstxt = document.getElementById("fileInput").files.item(0);
+    let IDstxt = document.getElementById('fileInput').files.item(0);
     reader.readAsText(IDstxt);
 }
 
@@ -79,8 +83,12 @@ function readIDs(fileIDs) {
     max = IDList.length - 1;
 }
 
-var rnd = Math.random;
-function shuffle(arr,len,i,k){len = arr.length;while(len)i=rnd()*len--|0,k=arr[len],arr[len]=arr[i],arr[i]=k;}
+let rnd = Math.random;
+
+function shuffle(arr, len, i, k) {
+    len = arr.length;
+    while (len) i = rnd() * len-- | 0, k = arr[len], arr[len] = arr[i], arr[i] = k;
+}
 
 function shuffleList() {
     shuffle(IDList);
@@ -109,24 +117,26 @@ function setIndex(i) {
     } else if (index > max) {
         index = 0;
     }
-    document.getElementById("index").innerHTML = index + 1;
+    document.getElementById('index').innerHTML = index + 1;
 }
 
 function save() {
-    var IDs = IDList.join('~');
-    var blob = new Blob([IDs], {type: "text/plain"});
-    var url = window.URL.createObjectURL(blob);
-    var a = document.getElementById("download");
+    let IDs = IDList.join('~');
+    let blob = new Blob([IDs], {
+        type: 'text/plain'
+    });
+    let url = window.URL.createObjectURL(blob);
+    let a = document.getElementById('download');
 
-    a.setAttribute("href", url);
-    a.setAttribute("download", "ShuffledIDs.txt");
-    a.setAttribute("onclick", "downloaded('" + url + "')");
-    a.classList.remove("hidden");
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'ShuffledIDs.txt');
+    a.setAttribute('onclick', "downloaded('" + url + "')");
+    a.classList.remove('hidden');
 }
 
 function downloaded(url) {
     window.setTimeout(function () {
         window.URL.revokeObjectURL(url);
     }, 500);
-	document.getElementById("download").classList.add("hidden");
+    document.getElementById('download').classList.add('hidden');
 }
