@@ -5,6 +5,14 @@ let IDList;
 let index = 0;
 let max;
 
+function resize() {
+    let plr = document.getElementById('player');
+    let w = Math.min(document.documentElement.clientWidth, 768);
+    let h = Math.floor(w * 9 / 16);
+    plr.setAttribute('width', w);
+    plr.setAttribute('height', h);
+}
+
 function onYouTubeIframeAPIReady() {
     window.setTimeout(function () {
         player = new YT.Player('player', {
@@ -14,11 +22,8 @@ function onYouTubeIframeAPIReady() {
             }
         });
     }, 1500);
-    let plr = document.getElementById('player');
-    let w = Math.min(document.documentElement.clientWidth, 768);
-    let h = Math.floor(w * 9 / 16);
-    plr.setAttribute('width', w);
-    plr.setAttribute('height', h);
+    resize();
+    window.addEventListener('orientationchange', resize);
 }
 
 function playerChanged(event) {
