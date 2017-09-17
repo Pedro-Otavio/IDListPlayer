@@ -63,7 +63,7 @@ function enableBtns() {
     $('#shuffle').prop('disabled', false);
     $('#labelPrevious').removeClass('disabled');
     $('#labelNext').removeClass('disabled');
-    $('#labelJumpTo').removeClass('disabled');
+    $('#labelSkipTo').removeClass('disabled');
     $('#labelShuffle').removeClass('disabled');
 }
 
