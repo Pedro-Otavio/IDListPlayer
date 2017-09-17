@@ -1,5 +1,5 @@
 let player;
-let title = document.getElementById('title');
+let title = $('#title');
 let minQual = false;
 let currVidMinQual = false;
 let IDList;
@@ -7,11 +7,11 @@ let index = 0;
 let max;
 
 function resize() {
-    let plr = document.getElementById('player');
+    let plr = $('#player');
     let w = Math.min(document.documentElement.clientWidth, 768);
     let h = Math.floor(w * 9 / 16);
-    plr.setAttribute('width', w);
-    plr.setAttribute('height', h);
+    plr.attr('width', w);
+    plr.attr('height', h);
 }
 
 function onYouTubeIframeAPIReady() {
@@ -52,26 +52,26 @@ function quality() {
 
 function toggleMinQuality() {
     minQual = !minQual;
-    document.getElementById('labelMinquality').classList.toggle('disabled');
+    $('#labelMinquality').toggleClass('disabled');
     quality();
 }
 
 function enableBtns() {
-    document.getElementById('previous').disabled = false;
-    document.getElementById('next').disabled = false;
-    document.getElementById('skipTo').disabled = false;
-    document.getElementById('shuffle').disabled = false;
-    document.getElementById('labelPrevious').classList.remove('disabled');
-    document.getElementById('labelNext').classList.remove('disabled');
-    document.getElementById('labelJumpTo').classList.remove('disabled');
-    document.getElementById('labelShuffle').classList.remove('disabled');
+    $('#previous').prop('disabled', false);
+    $('#next').prop('disabled', false);
+    $('#skipTo').prop('disabled', false);
+    $('#shuffle').prop('disabled', false);
+    $('#labelPrevious').removeClass('disabled');
+    $('#labelNext').removeClass('disabled');
+    $('#labelJumpTo').removeClass('disabled');
+    $('#labelShuffle').removeClass('disabled');
 }
 
 let reader = new FileReader();
 reader.onloadend = function (event) {
     let error = event.target.error;
     if (error !== null) {
-        document.getElementById('errow').hidden = false;
+        $('#errow').show();
         console.error("FileReader error code " + error.code);
     } else {
         readIDs(event.target.result);
@@ -82,7 +82,7 @@ reader.onloadend = function (event) {
 };
 
 function ready() {
-    let IDstxt = document.getElementById('fileInput').files.item(0);
+    let IDstxt = $('#fileInput').prop('files')[0];
     reader.readAsText(IDstxt);
 }
 
@@ -123,7 +123,7 @@ function setIndex(i) {
     } else if (index > max) {
         index = 0;
     }
-    document.getElementById('index').innerHTML = index + 1;
+    $('#index').html(index + 1);
 }
 
 function save() {
@@ -132,17 +132,16 @@ function save() {
         type: 'text/plain'
     });
     let url = window.URL.createObjectURL(blob);
-    let a = document.getElementById('download');
-
-    a.setAttribute('href', url);
-    a.setAttribute('download', 'ShuffledIDs.txt');
-    a.setAttribute('onclick', "downloaded('" + url + "')");
-    a.classList.remove('hidden');
+    let a = $('#download');
+    a.attr('href', url);
+    a.attr('download', 'ShuffledIDs.txt');
+    a.attr('onclick', "downloaded('" + url + "')");
+    a.show();
 }
 
 function downloaded(url) {
     window.setTimeout(function () {
         window.URL.revokeObjectURL(url);
     }, 500);
-    document.getElementById('download').classList.add('hidden');
+    $('#download').hide();
 }
