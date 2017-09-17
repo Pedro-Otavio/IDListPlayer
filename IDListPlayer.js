@@ -24,7 +24,7 @@ function onYouTubeIframeAPIReady() {
         });
     }, 1500);
     resize();
-    window.addEventListener('orientationchange', next);
+    window.addEventListener('orientationchange', resize);
 }
 
 function playerChanged(event) {
