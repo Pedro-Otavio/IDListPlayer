@@ -1,6 +1,7 @@
 let player;
 let title = document.getElementById('title');
 let minQual = false;
+let currVidMinQual = false;
 let IDList;
 let index = 0;
 let max;
@@ -23,7 +24,7 @@ function onYouTubeIframeAPIReady() {
         });
     }, 1500);
     resize();
-    window.addEventListener('orientationchange', resize);
+    window.addEventListener('resize', next);
 }
 
 function playerChanged(event) {
@@ -42,9 +43,10 @@ function playerChanged(event) {
 }
 
 function quality() {
-    if (minQual) {
+    if (minQual && !currVidMinQual) {
         player.setPlaybackQuality('small');
         player.setPlaybackQuality('tiny');
+        currVidMinQual = true;
     }
 }
 
@@ -57,7 +59,7 @@ function toggleMinQuality() {
 function enableBtns() {
     document.getElementById('previous').disabled = false;
     document.getElementById('next').disabled = false;
-    document.getElementById('jumpTo').disabled = false;
+    document.getElementById('skipTo').disabled = false;
     document.getElementById('shuffle').disabled = false;
     document.getElementById('labelPrevious').classList.remove('disabled');
     document.getElementById('labelNext').classList.remove('disabled');
@@ -91,29 +93,27 @@ function readIDs(fileIDs) {
 
 let rnd = Math.random;
 
-function shuffle(arr, len, i, k) {
-    len = arr.length;
+function shuffle(arr, len = arr.length, i, k) {
     while (len) i = rnd() * len-- | 0, k = arr[len], arr[len] = arr[i], arr[i] = k;
 }
 
 function shuffleList() {
     shuffle(IDList);
-    jumpTo(0);
+    skipTo(0);
 }
 
 function next() {
-    setIndex(index + 1);
-    player.loadVideoById(IDList[index]);
+    skipTo(index + 1);
 }
 
 function previous() {
-    setIndex(index - 1);
-    player.loadVideoById(IDList[index]);
+    skipTo(index - 1);
 }
 
-function jumpTo(i) {
+function skipTo(i) {
     setIndex(i);
     player.loadVideoById(IDList[index]);
+    currVidMinQual = false;
 }
 
 function setIndex(i) {
