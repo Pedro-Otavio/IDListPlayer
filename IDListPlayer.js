@@ -31,10 +31,10 @@ function playerChanged(event) {
     switch (event.data) {
         case 0:
             next();
-            title.innerHTML = "ID List Player";
+            title.html("ID List Player");
             break;
         case 1:
-            title.innerHTML = player.getVideoData().title;
+            title.html(player.getVideoData().title);
             break;
         case 3:
             quality();
@@ -89,6 +89,7 @@ function ready() {
 function readIDs(fileIDs) {
     IDList = fileIDs.split('~');
     max = IDList.length - 1;
+    $('#fileInput').val(null);
 }
 
 let rnd = Math.random;
