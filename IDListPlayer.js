@@ -25,7 +25,7 @@ function onYouTubeIframeAPIReady() {
     }, 1500);
     resize();
     window.addEventListener('orientationchange', function () {
-        window.setTimeout(resize, 1000);
+        window.setTimeout(resize, 640);
     });
 }
 
