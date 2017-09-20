@@ -139,12 +139,12 @@ function save() {
     a.attr('href', url);
     a.attr('download', 'ShuffledIDs.txt');
     a.attr('onclick', "downloaded('" + url + "')");
-    a.show();
+    a.removeClass('hidden');
 }
 
 function downloaded(url) {
     window.setTimeout(function () {
         window.URL.revokeObjectURL(url);
     }, 500);
-    $('#download').hide();
+    $('#download').addClass('hidden');
 }
