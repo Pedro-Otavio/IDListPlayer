@@ -38,12 +38,12 @@ function playerChanged(event) {
     switch (event.data) {
         case 0:
             skipTo(index + 1);
-            titleArr = null;
-            document.title = "ID List Player";
             break;
         case 1:
-            titleArr = splitArtistSong(player.getVideoData().title);
-            document.title = titleArr[0];
+            if (titleArr == null) {
+                titleArr = splitArtistSong(player.getVideoData().title);
+                document.title = titleArr[0];
+            }
             break;
         case 3:
             quality();
@@ -62,6 +62,8 @@ function quality() {
 function splitArtistSong(title) {
     if (title.indexOf("-") != -1) {
         return title.split("-");
+    } else {
+        return [title];
     }
 }
 
@@ -131,8 +133,10 @@ function shuffleList() {
 
 function skipTo(i) {
     setIndex(i);
-    player.loadVideoById(IDList[index]);
+    document.title = "ID List Player";
     currVidMinQual = false;
+    titleArr = null;
+    player.loadVideoById(IDList[index]);
 }
 
 function setIndex(i) {
