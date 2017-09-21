@@ -32,7 +32,7 @@
         <div class="row center">
             <div class="col-md-6 col-md-offset-3">
                 <label id="labelPrevious" for="previous" title="Previous" class="btn disabled"><span class="glyphicon glyphicon-arrow-left"></span></label>
-                <button id="previous" class="hidden" onclick="previous();" disabled>Previous();</button>
+                <button id="previous" class="hidden" onclick="skipTo(index - 1);" disabled>Previous();</button>
                 <b>&nbsp;&nbsp;&nbsp;</b>
                 <input id="indexInput" class="form-control" style="display: inline-block; width: 2.5em; padding: 0.4em 0.1em 0.4em 0.34em;">
                 <label id="labelSkipTo" for="skipTo" title="Skip to" class="btn disabled"><span class="glyphicon glyphicon-search"></span></label>
@@ -42,7 +42,7 @@
                 <button id="shuffle" class="hidden" onclick="shuffleList();" disabled>Shuffle();</button>
                 <b>&nbsp;&nbsp;&nbsp;</b>
                 <label id="labelNext" for="next" title="Next" class="btn disabled"><span class="glyphicon glyphicon-arrow-right"></span></label>
-                <button id="next" class="hidden" onclick="next();" disabled>Next();</button>
+                <button id="next" class="hidden" onclick="skipTo(index + 1);" disabled>Next();</button>
             </div>
         </div>
         <div class="d-1"></div>
@@ -56,8 +56,8 @@
             <div class="col-md-6 col-md-offset-3">
                 <label id="labelFileInput" for="fileInput" title="Load ID List file" class="btn"><span class="glyphicon glyphicon-folder-open"></span></label>
                 <input id="fileInput" class="hidden" type="file" onchange="ready();" /><b class="hidden">Ready();</b>
-                <label id="labelSave" for="save" title="Create ID List file for this playlist in the current order" class="btn"><span class="glyphicon glyphicon-save-file"></span></label>
-                <button id="save" class="hidden" onclick="save();">Save();</button>
+                <label id="labelSave" for="save" title="Create ID List file for this playlist in the current order" class="btn disabled"><span class="glyphicon glyphicon-save-file"></span></label>
+                <button id="save" class="hidden" onclick="save();" disabled>Save();</button>
                 <a id="download" class="btn hidden"><span class="glyphicon glyphicon-download-alt"></span></a>
                 <label id="labelMinquality" for="minquality" title="Toggle minimum quality mode" class="btn"><span class="glyphicon glyphicon-hd-video"></span></label>
                 <button id="minquality" class="hidden" onclick="toggleMinQuality();">ToggleMinQuality();</button>

@@ -1,5 +1,6 @@
 let player;
-let title = $('#title');
+let titleArr;
+let titleIndex = 0;
 let minQual = false;
 let currVidMinQual = false;
 let IDList;
@@ -23,20 +24,26 @@ function onYouTubeIframeAPIReady() {
             }
         });
     }, 1500);
+
     resize();
+
     window.addEventListener('orientationchange', function () {
         window.setTimeout(resize, 640);
     });
+
+    window.setInterval(titleSwitch, 1500);
 }
 
 function playerChanged(event) {
     switch (event.data) {
         case 0:
-            next();
-            title.html("ID List Player");
+            skipTo(index + 1);
+            titleArr = null;
+            document.title = "ID List Player";
             break;
         case 1:
-            title.html(player.getVideoData().title);
+            titleArr = splitArtistSong(player.getVideoData().title);
+            document.title = titleArr[0];
             break;
         case 3:
             quality();
@@ -52,6 +59,22 @@ function quality() {
     }
 }
 
+function splitArtistSong(title) {
+    if (title.indexOf("-") != -1) {
+        return title.split("-");
+    }
+}
+
+function titleSwitch() {
+    if (titleArr) {
+        document.title = titleArr[titleIndex];
+        titleIndex++;
+        if (titleIndex > (titleArr.length - 1)) {
+            titleIndex = 0;
+        }
+    }
+}
+
 function toggleMinQuality() {
     minQual = !minQual;
     $('#labelMinquality').toggleClass('disabled');
@@ -63,18 +86,19 @@ function enableBtns() {
     $('#next').prop('disabled', false);
     $('#skipTo').prop('disabled', false);
     $('#shuffle').prop('disabled', false);
+    $('#save').prop('disabled', false);
     $('#labelPrevious').removeClass('disabled');
     $('#labelNext').removeClass('disabled');
     $('#labelSkipTo').removeClass('disabled');
     $('#labelShuffle').removeClass('disabled');
+    $('#labelSave').removeClass('disabled');
 }
 
 let reader = new FileReader();
 reader.onloadend = function (event) {
-    let error = event.target.error;
-    if (error !== null) {
+    if (event.target.error) {
         $('#errow').show();
-        console.error("FileReader error code " + error.code);
+        console.log("\nFileReader error code " + event.target.error.code + "\n");
     } else {
         readIDs(event.target.result);
         enableBtns();
@@ -103,14 +127,6 @@ function shuffle(arr, len = arr.length, i, k) {
 function shuffleList() {
     shuffle(IDList);
     skipTo(0);
-}
-
-function next() {
-    skipTo(index + 1);
-}
-
-function previous() {
-    skipTo(index - 1);
 }
 
 function skipTo(i) {
