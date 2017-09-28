@@ -60,8 +60,9 @@ function quality() {
 }
 
 function splitArtistSong(title) {
-    if (title.indexOf("-") != -1) {
-        return title.split("-");
+    let dash = title.indexOf(" - ");
+    if (dash != -1) {
+        return [title.substring(0, dash), title.substring(dash + 3)];
     } else {
         return [title];
     }
