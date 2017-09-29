@@ -151,7 +151,7 @@ function quality() {
 function titleSwitch() {
     if (titleArray) {
         document.title = titleArray[titleIndex];
-        titleIndex = (titleIndex == (titleArray.length - 1)) ? titleIndex + 1 : 0;
+        titleIndex = (titleIndex < (titleArray.length - 1)) ? titleIndex + 1 : 0;
     } else {
         document.title = "ID List Player";
     }
