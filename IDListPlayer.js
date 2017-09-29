@@ -32,7 +32,7 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
     $('#next').click(next);
     $('#previous').click(previous);
     $('#skipTo').click(function () {
-        skipTo($('#indexInput').val);
+        skipTo($('#indexInput').val());
     });
     $('#minQualityToggle').click(toggleMinQuality);
     $('#save').click(save);
@@ -54,6 +54,7 @@ function readFile() {
 
 function ready() {
     indexArray = [...Array(fileData.length).keys()];
+    max = indexArray.length - 1;
     enableBtns();
     setIndex(0);
     player.cueVideoById(fileData[0].id);
@@ -112,12 +113,16 @@ function setIndex(i) {
 }
 
 function save() {
-    let IDs = indexArray.join('~');
-    let blob = new Blob([IDs], {
-        type: 'text/plain'
+    let dataArr = [];
+    for (let i = 0, len = max + 1; i < len; i++) {
+        dataArr.push(fileData[indexArray[i]]);
+    }
+    let data = JSON.stringify(dataArr);
+    let blob = new Blob([data], {
+        type: 'application/json'
     });
     let url = window.URL.createObjectURL(blob);
-    $('#download').attr('href', url).attr('download', 'ShuffledIDs.txt').click(function () {
+    $('#download').attr('href', url).attr('download', 'ShuffledIDs.json').click(function () {
         downloaded(url);
     }).removeClass('hidden');
 }
