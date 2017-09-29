@@ -34,7 +34,7 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
     $('#skipTo').click(function () {
         skipTo($('#indexInput').val);
     });
-    $('#toggleMinQuality').click(toggleMinQuality);
+    $('#minQualityToggle').click(toggleMinQuality);
     $('#save').click(save);
 }
 
