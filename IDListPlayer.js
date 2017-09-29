@@ -32,7 +32,7 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
     $('#next').click(next);
     $('#previous').click(previous);
     $('#skipTo').click(function () {
-        skipTo(Number($('#indexInput').val()) + 1);
+        skipTo(Number($('#indexInput').val()) - 1);
     });
     $('#minQualityToggle').click(toggleMinQuality);
     $('#save').click(save);
