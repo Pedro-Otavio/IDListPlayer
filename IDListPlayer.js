@@ -39,17 +39,15 @@ function addListeners() {
             $(this).append("<span class='glyphicon glyphicon-ban-circle'></span>");
         },
         function () {
-            let jQobj = $(this);
-            window.setTimeout(function () {
-                jQobj.children('.glyphicon-ban-circle').remove();
-                jQobj.children('.glyphicon').removeClass('hidden');
-            }, 96);
+            $(this).children('.glyphicon-ban-circle').remove();
+            $(this).children('.glyphicon').removeClass('hidden');
         });
     $('#shuffle').click(shufflePlaylist);
+    $('#unshuffle').click(unshufflePlaylist);
     $('#next').click(next);
     $('#previous').click(previous);
     $('#indexInput').on('keypress', function (e) {
-        if (e.which === 13) {
+        if (e.which == 13) {
             $(this).prop('disabled', true);
             skipTo($(this).val());
             $(this).prop('disabled', false);
@@ -92,7 +90,7 @@ function enableBtns() {
 
 function skipTo(i) {
     if (typeof i == "string") {
-        i = (i == 'r' ? Math.random() * max : Number(i - 1));
+        i = (i.toLowerCase() == 'r' ? Math.floor(Math.random() * max) : (Number(i) - 1));
     }
     setIndex(i);
     play();
@@ -134,6 +132,11 @@ let rnd = Math.random;
 
 function shuffleArray(arr, len = arr.length, i, k) {
     while (len) i = rnd() * len-- | 0, k = arr[len], arr[len] = arr[i], arr[i] = k;
+}
+
+function unshufflePlaylist() {
+    indexArray = [...Array(fileData.length).keys()];
+    skipTo(0);
 }
 
 function quality() {

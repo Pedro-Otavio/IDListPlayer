@@ -38,13 +38,13 @@
                     <span class="glyphicon glyphicon-arrow-left"></span>
                 </label>
                 <button id="previous" class="hidden propDataDisabled" disabled></button>
-                <b>&nbsp;&nbsp;&nbsp;</b>
-                <input id="indexInput" class="form-control propDataDisabled" style="display: inline-block; width: 2.5em; padding: 0.4em 0.1em 0.4em 0.34em;" disabled>
-                <label id="labelSkipTo" for="skipTo" title="Skip to" class="btn disabled classDataDisabled">
+                <b>&nbsp;-&nbsp;</b>
+                <input id="indexInput" class="form-control threeDigitInput propDataDisabled" title="Index or 'R'/'r' for random" disabled>
+                <label id="labelSkipTo" for="skipTo" title="Skip to that" class="btn disabled classDataDisabled">
                     <span class="glyphicon glyphicon-arrow-up"></span>
                 </label>
                 <button id="skipTo" class="hidden propDataDisabled" disabled></button>
-                <b>&nbsp;&nbsp;</b>
+                <b>&nbsp;-&nbsp;</b>
                 <label id="labelNext" for="next" title="Next" class="btn disabled classDataDisabled">
                     <span class="glyphicon glyphicon-arrow-right"></span>
                 </label>
@@ -54,7 +54,7 @@
         <div class="d-1" />
         <div class="row center">
             <div class="col-md-6 col-md-offset-3">
-                <p class="lead" style="display: inline;"><span id="index" title="Current video's index" style="color: #CFCFCF;">None</span></p>
+                <p class="lead" style="display: inline;"><span id="index" style="color: #CFCFCF;">None</span></p>
             </div>
         </div>
         <div class="d-1" />
@@ -64,12 +64,12 @@
                     <span class="glyphicon glyphicon-random"></span>
                 </label>
                 <button id="shuffle" class="hidden propDataDisabled" disabled></button>
-                <b>&nbsp;&nbsp;&nbsp;</b>
-                <label id="labelUnshuffle" for="unshuffle" title="Unshuffle" class="btn disabled">
+                <b>&nbsp;-&nbsp;</b>
+                <label id="labelUnshuffle" for="unshuffle" title="Unshuffle" class="btn disabled classDataDisabled">
                     <span class="glyphicon glyphicon-cd"></span>
                 </label>
-                <button id="unshuffle" class="hidden" disabled></button>
-                <b>&nbsp;&nbsp;&nbsp;</b>
+                <button id="unshuffle" class="hidden propDataDisabled" disabled></button>
+                <b>&nbsp;|&nbsp;</b>
                 <label id="labelMinquality" for="minQualityToggle" title="Toggle minimum quality mode" class="btn">
                     <span class="glyphicon glyphicon-hd-video"></span>
                 </label>
