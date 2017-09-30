@@ -203,7 +203,7 @@ function TitleSwitcher() {
         if (self.artistSongArray.length > 1) {
             $('title').text(self.artistSongArray[self.i]);
             self.i++;
-            if (self.i >= self.artistSongArray.length){
+            if (self.i >= self.artistSongArray.length) {
                 self.i = 0;
             }
         } else {
@@ -219,8 +219,8 @@ function TitleSwitcher() {
         }, 1280);
     };
     this.halt = function () {
-        self.artistSongArray = null;
-        $('title').text('ID List Player');
+        self.artistSongArray = ["ID List Player"];
+        self.switchArtistSong();
     };
 }
 
