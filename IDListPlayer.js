@@ -22,7 +22,11 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
         window.setTimeout(resize, 256);
     });
 
-    addListeners();
+    window.addEventListener('mousedown', function () {
+        $(':focus').blur();
+    });
+
+    addButtonListeners();
 }
 
 function resize() {
@@ -31,7 +35,7 @@ function resize() {
     $('#player').attr('width', w).attr('height', h);
 }
 
-function addListeners() {
+function addButtonListeners() {
     $('#fileInput').change(readFile);
     $('#minQualityToggle').click(toggleMinQuality);
     $('#shuffle').click(shufflePlaylist);
@@ -125,8 +129,8 @@ function previous() {
 }
 
 function search(term) {
+    $('#searchResultTable').empty();
     $('#searchResultContainer').show();
-    $('searchResultTable').empty();
     let match;
     if (term.indexOf("/") == 0) {
         let pattern = new RegExp(term.substring(1), 'i');
@@ -151,7 +155,7 @@ function search(term) {
                         <div style="width: 5.5em;">
                             <h4 title="index in source file">${(i + 1)}</h4>
                             <h4>-</h4>
-                            <h4 title="index in current playlist">${indexArray.indexOf(i + 1)}</h4>
+                            <h4 title="index in current playlist">${indexArray.indexOf(i)}</h4>
                         </div>
                     </td>
                     <td>
