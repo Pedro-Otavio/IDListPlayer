@@ -107,6 +107,7 @@ function setIndex(i) {
 }
 
 function play() {
+    $('#searchResultContainer').hide();
     tSwitcher.halt();
     currentVideoMimumQuality = false;
     let vidObj = fileData[indexArray[index]];
