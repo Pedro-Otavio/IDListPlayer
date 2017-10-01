@@ -21,72 +21,80 @@
 
 <body>
     <div class="container fullH">
-        <div class="d-10" />
+        <div class="d-10"></div>
         <div class="row center">
             <div class="col-md-12">
                 <h1>Plays <a href="https://pedro-otavio.github.io/IDEx/">ID Lists</a> from <a href="https://www.youtube.com/">youtube</a>                    playlists</h1>
             </div>
         </div>
-        <div class="d-2" />
+        <div class="d-2"></div>
         <div class="row center">
             <iframe id="player" src="https://www.youtube-nocookie.com/embed/k3PVDKNupbI?enablejsapi=1&rel=0&hl=en&modestbranding=1" frameborder="0"></iframe>
         </div>
-        <div class="d-1" />
+        <div class="d-1"></div>
         <div class="row center">
             <div class="col-md-6 col-md-offset-3">
-                <label id="labelPrevious" for="previous" title="Previous" class="btn disabled classDataDisabled">
+                <button id="previous" title="Previous" class="btn dataDisabled" disabled>
                     <span class="glyphicon glyphicon-arrow-left"></span>
-                </label>
-                <button id="previous" class="hidden propDataDisabled" disabled></button>
+                </button>
                 <b>&nbsp;-&nbsp;</b>
-                <input id="indexInput" class="form-control threeDigitInput propDataDisabled" title="Index or 'R'/'r' for random" disabled>
-                <label id="labelSkipTo" for="skipTo" title="Skip to that" class="btn disabled classDataDisabled">
+                <input id="indexInput" class="form-control threeDigitInput dataDisabled" title="Index or 'R'/'r' for random" disabled>
+                <button id="skipTo" title="Skip to that" class="btn dataDisabled" disabled>
                     <span class="glyphicon glyphicon-arrow-up"></span>
-                </label>
-                <button id="skipTo" class="hidden propDataDisabled" disabled></button>
+                </button>
                 <b>&nbsp;-&nbsp;</b>
-                <label id="labelNext" for="next" title="Next" class="btn disabled classDataDisabled">
+                <input id="searchInput" class="form-control fiveDigitInput dataDisabled" title="Text or /text for RegExp)" disabled>
+                <button id="search" title="Search " class="btn dataDisabled" disabled>
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+                <b>&nbsp;-&nbsp;</b>
+                <button id="next" title="Next" class="btn dataDisabled" disabled>
                     <span class="glyphicon glyphicon-arrow-right"></span>
-                </label>
-                <button id="next" class="hidden propDataDisabled" disabled></button>
+                </button>
             </div>
         </div>
-        <div class="d-1" />
+        <div id="searchResultContainer" hidden>
+            <div class="d-1"></div>
+            <div class="row center">
+                <div class="col-md-6 col-md-offset-3">
+                    <table class="table table-minimal">
+                        <tbody id="searchResultTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="d-1"></div>
         <div class="row center">
             <div class="col-md-6 col-md-offset-3">
                 <p class="lead" style="display: inline;"><span id="index" style="color: #CFCFCF;">None</span></p>
             </div>
         </div>
-        <div class="d-1" />
+        <div class="d-1"></div>
         <div class="row center">
             <div class="col-md-6 col-md-offset-3">
-                <label id="labelShuffle" for="shuffle" title="Shuffle" class="btn disabled classDataDisabled">
+                <button id="shuffle" title="Shuffle" class="btn dataDisabled" disabled>
                     <span class="glyphicon glyphicon-random"></span>
-                </label>
-                <button id="shuffle" class="hidden propDataDisabled" disabled></button>
+                </button>
                 <b>&nbsp;-&nbsp;</b>
-                <label id="labelUnshuffle" for="unshuffle" title="Unshuffle" class="btn disabled classDataDisabled">
+                <button id="unshuffle" title="Unshuffle" class="btn dataDisabled" disabled>
                     <span class="glyphicon glyphicon-cd"></span>
-                </label>
-                <button id="unshuffle" class="hidden propDataDisabled" disabled></button>
+                </button>
                 <b>&nbsp;|&nbsp;</b>
-                <label id="labelMinquality" for="minQualityToggle" title="Toggle minimum quality mode" class="btn">
+                <button id="minQualityToggle" title="Toggle minimum quality mode" class="btn">
                     <span class="glyphicon glyphicon-hd-video"></span>
-                </label>
-                <button id="minQualityToggle" class="hidden"></button>
+                </button>
             </div>
         </div>
-        <div class="d-1" />
+        <div class="d-1"></div>
         <div class="row center">
             <div class="col-md-6 col-md-offset-3">
                 <label id="labelFileInput" for="fileInput" title="Load ID List file" class="btn">
                     <span class="glyphicon glyphicon-folder-open"></span>
                 </label>
-                <input id="fileInput" class="hidden" type="file" />
-                <label id="labelSave" for="save" title="Create ID List file for this playlist in the current order" class="btn disabled classDataDisabled">
+                <input id="fileInput" class="hidden" type="file" 1/>
+                <button id="save" title="Create ID List file for this playlist in the current order" class="btn dataDisabled">
                     <span class="glyphicon glyphicon-floppy-save"></span>
-                </label>
-                <button id="save" class="hidden propDataDisabled" disabled></button>
+                </button>
                 <a id="download" class="btn hidden"><span class="glyphicon glyphicon-download-alt"></span></a>
             </div>
         </div>
@@ -96,7 +104,6 @@
             </div>
         </div>
     </div>
-    <b>v.1.9</b>
     <script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
 </body>
 

@@ -33,15 +33,7 @@ function resize() {
 
 function addListeners() {
     $('#fileInput').change(readFile);
-    $('.disabled').hover(
-        function () {
-            $(this).children('.glyphicon').addClass('hidden');
-            $(this).append("<span class='glyphicon glyphicon-ban-circle'></span>");
-        },
-        function () {
-            $(this).children('.glyphicon-ban-circle').remove();
-            $(this).children('.glyphicon').removeClass('hidden');
-        });
+    $('#minQualityToggle').click(toggleMinQuality);
     $('#shuffle').click(shufflePlaylist);
     $('#unshuffle').click(unshufflePlaylist);
     $('#next').click(next);
@@ -56,7 +48,16 @@ function addListeners() {
     $('#skipTo').click(function () {
         skipTo($('#indexInput').val());
     });
-    $('#minQualityToggle').click(toggleMinQuality);
+    $('#searchInput').on('keypress', function (e) {
+        if (e.which == 13) {
+            $(this).prop('disabled', true);
+            search($(this).val());
+            $(this).prop('disabled', false);
+        }
+    });
+    $('#search').click(function () {
+        search($('#searchInput').val());
+    });
     $('#save').click(save);
 }
 
@@ -83,9 +84,8 @@ function ready() {
 }
 
 function enableBtns() {
-    $('.propDataDisabled').prop('disabled', false);
-    $('.classDataDisabled').removeClass('disabled').off('mouseenter').off('mouseleave').children('.glyphicon-ban-circle').remove();
-    $('.classDataDisabled').children('.glyphicon').removeClass('hidden');
+    $('.dataDisabled').prop('disabled', false).off('mouseenter').off('mouseleave').children('.glyphicon-ban-circle').remove();
+    $('.dataDisabled').children('.glyphicon').removeClass('hidden');
 }
 
 function skipTo(i) {
@@ -123,9 +123,57 @@ function previous() {
     skipTo(index - 1);
 }
 
+function search(term) {
+    $('#searchResultContainer').show();
+    $('searchResultTable').empty();
+    let match;
+    if (term.indexOf("/") == 0) {
+        let pattern = new RegExp(term.substring(1), 'i');
+        match = function (str) {
+            return pattern.test(str);
+        };
+    } else {
+        match = function (str) {
+            return str.includes(term.toLowerCase());
+        };
+    }
+    for (let i = 0, len = fileData.length; i < len; ++i) {
+        let title = fileData[i].title;
+        let id = fileData[i].id;
+        if (title == null) {
+            continue;
+        }
+        if (match(title.toLowerCase())) {
+            $('#searchResultTable').append(`
+                <tr>
+                    <td>
+                        <div style="width: 5.5em;">
+                            <h4 title="index in source file">${(i + 1)}</h4>
+                            <h4>-</h4>
+                            <h4 title="index in current playlist">${indexArray.indexOf(i + 1)}</h4>
+                        </div>
+                    </td>
+                    <td>
+                        <h4>${title}</h4>
+                    </td>
+                    <td>
+                        <button id="play-${id}" title="Play now" class="btn">
+                            <span class="glyphicon glyphicon-play"></span>
+                        </button>
+                    </td>
+                </tr>
+            `);
+            $(`#play-${id}`).click(function () {
+                player.loadVideoById(id);
+            });
+        }
+    }
+}
+
 function shufflePlaylist() {
     shuffleArray(indexArray);
-    skipTo(0);
+    index = (max + 1);
+    $('#index').text("0 (Playlist shuffled)");
 }
 
 let rnd = Math.random;
@@ -136,7 +184,8 @@ function shuffleArray(arr, len = arr.length, i, k) {
 
 function unshufflePlaylist() {
     indexArray = [...Array(fileData.length).keys()];
-    skipTo(0);
+    index = (max + 1);
+    $('#index').text("0 (Playlist unshuffled)");
 }
 
 function quality() {
@@ -149,13 +198,13 @@ function quality() {
 
 function toggleMinQuality() {
     qualityOption = !qualityOption;
-    $('#labelMinquality').toggleClass('off');
+    $('#minQualityToggle').toggleClass('off');
     quality();
 }
 
 function save() {
     let dataArr = [];
-    for (let i = 0, len = max + 1; i < len; i++) {
+    for (let i = 0, len = max + 1; i < len; ++i) {
         dataArr.push(fileData[indexArray[i]]);
     }
     let data = JSON.stringify(dataArr);
@@ -205,7 +254,7 @@ function TitleSwitcher() {
     this.switchArtistSong = function () {
         if (self.artistSongArray.length > 1) {
             $('title').text(self.artistSongArray[self.i]);
-            self.i++;
+            ++(self.i);
             if (self.i >= self.artistSongArray.length) {
                 self.i = 0;
             }
