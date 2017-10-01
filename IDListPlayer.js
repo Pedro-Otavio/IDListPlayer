@@ -7,7 +7,7 @@ let max = 0;
 let tSwitcher = new TitleSwitcher(null);
 let qualityOption = false;
 let currentVideoMimumQuality = false;
-//test
+
 function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
     player = new YT.Player('player', {
         events: {
