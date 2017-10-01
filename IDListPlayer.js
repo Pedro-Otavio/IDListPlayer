@@ -166,6 +166,7 @@ function search(term) {
             `);
             $(`#play-${id}`).click(function () {
                 player.loadVideoById(id);
+                $('#searchResultContainer').hide();
             });
         }
     }
