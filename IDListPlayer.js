@@ -94,7 +94,9 @@ function enableBtns() {
 
 function skipTo(i) {
     if (typeof i == "string") {
-        i = (i.toLowerCase() == 'r' ? Math.floor(Math.random() * max) : (Number(i) - 1));
+        i = (i == 'R' || i == 'r' ? Math.floor(Math.random() * max) : (Number(i) - 1));
+        if (-2 < i && i < 0)
+            i = 0;
     }
     setIndex(i);
     play();
