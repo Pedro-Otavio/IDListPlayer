@@ -171,7 +171,11 @@ function search(term) {
                 </tr>
             `);
             $(`#play-${id}`).click(function () {
+                tSwitcher.halt();
+                currentVideoMimumQuality = false;
                 player.loadVideoById(id);
+                tSwitcher.artistSongArray = splitArtistSong(title);
+                tSwitcher.begin();
                 $('#searchResultContainer').hide();
             });
         }
