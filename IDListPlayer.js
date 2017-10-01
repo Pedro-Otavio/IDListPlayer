@@ -23,7 +23,7 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
     });
 
     window.addEventListener('mouseup', function () {
-        $(':focus').blur();
+        $('.btn:focus').blur();
     });
 
     addButtonListeners();
