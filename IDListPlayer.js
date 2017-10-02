@@ -46,7 +46,7 @@ function addButtonListeners() {
         if (e.which == 13) {
             $(this).prop('disabled', true);
             skipTo($(this).val());
-            $(this).prop('disabled', false);
+            $(this).prop('disabled', false).focus();
         }
     });
     $('#skipTo').click(function () {
@@ -56,7 +56,7 @@ function addButtonListeners() {
         if (e.which == 13) {
             $(this).prop('disabled', true);
             search($(this).val());
-            $(this).prop('disabled', false);
+            $(this).prop('disabled', false).focus();
         }
     });
     $('#search').click(function () {
