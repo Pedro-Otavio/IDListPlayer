@@ -92,10 +92,17 @@
                     <span class="glyphicon glyphicon-folder-open"></span>
                 </label>
                 <input id="fileInput" class="hidden" type="file" 1/>
-                <button id="save" title="Download ID List file for this playlist in the current order" class="btn dataDisabled">
+                <button id="download" title="Download ID List file for this playlist in the current order" class="btn dataDisabled" disabled>
                     <span class="glyphicon glyphicon-download-alt"></span>
+                    <a id="hiddenLink" class="hidden"></a>
                 </button>
-                <a id="download" class="btn hidden"></a>
+                <b>&nbsp;|&nbsp;</b>
+                <button id="saveCookie" title="Soon" class="btn" disabled>
+                    <span class="glyphicon glyphicon-hd-video"></span>
+                </button>
+                <button id="loadCookie" title="Soon" class="btn" disabled>
+                    <span class="glyphicon glyphicon-hd-video"></span>
+                </button>
             </div>
         </div>
         <div id="errow" class="row center" hidden>

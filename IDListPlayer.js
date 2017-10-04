@@ -62,7 +62,7 @@ function addButtonListeners() {
     $('#search').click(function () {
         search($('#searchInput').val());
     });
-    $('#save').click(save);
+    $('#download').click(saveFile);
 }
 
 fileReaderObject.onerror = function (event) {
@@ -208,7 +208,7 @@ function toggleMinQuality() {
     quality();
 }
 
-function save() {
+function saveFile() {
     let dataArr = [];
     for (let i = 0, len = max + 1; i < len; ++i) {
         dataArr.push(fileData[indexArray[i]]);
@@ -218,10 +218,10 @@ function save() {
         type: 'application/json'
     });
     let url = window.URL.createObjectURL(blob);
-    $('#download').attr('href', url).attr('download', 'ShuffledIDs.json').click(function () {
+    $('#hiddenLink').attr('href', url).attr('download', 'ShuffledIDs.json').click(function () {
         window.URL.revokeObjectURL(url);
     });
-    document.querySelector('#download').click(); //jQuery bug
+    document.querySelector('#hiddenLink').click(); //jQuery bug
 }
 
 function playerChanged(event) {
