@@ -99,7 +99,7 @@ function skipTo(i) {
             i = 0;
     }
     setIndex(i);
-    play();
+    play(fileData[indexArray[index]]);
 }
 
 function setIndex(i) {
@@ -112,11 +112,10 @@ function setIndex(i) {
     $('#index').text(index + 1);
 }
 
-function play() {
+function play(vidObj) {
     $('#searchResultContainer').hide();
     tSwitcher.halt();
     currentVideoMimumQuality = false;
-    let vidObj = fileData[indexArray[index]];
     player.loadVideoById(vidObj.id);
     tSwitcher.artistSongArray = splitArtistSong(vidObj.title);
     tSwitcher.begin();
@@ -148,7 +147,7 @@ function search(term) {
         let title = fileData[i].title;
         let id = fileData[i].id;
         if (title == null) {
-            continue;
+            title = "Error, missing title";
         }
         if (match(title.toLowerCase())) {
             $('#searchResultTable').append(`
@@ -157,7 +156,7 @@ function search(term) {
                         <div style="width: 5.5em;">
                             <h4 title="index in source file">${(i + 1)}</h4>
                             <h4>-</h4>
-                            <h4 title="index in current playlist">${indexArray.indexOf(i)}</h4>
+                            <h4 title="index in current playlist">${(indexArray.indexOf(i) + 1)}</h4>
                         </div>
                     </td>
                     <td>
@@ -171,12 +170,7 @@ function search(term) {
                 </tr>
             `);
             $(`#play-${id}`).click(function () {
-                tSwitcher.halt();
-                currentVideoMimumQuality = false;
-                player.loadVideoById(id);
-                tSwitcher.artistSongArray = splitArtistSong(title);
-                tSwitcher.begin();
-                $('#searchResultContainer').hide();
+                play(fileData[i]);
             });
         }
     }
@@ -226,8 +220,8 @@ function save() {
     let url = window.URL.createObjectURL(blob);
     $('#download').attr('href', url).attr('download', 'ShuffledIDs.json').click(function () {
         window.URL.revokeObjectURL(url);
-        $(this).addClass('hidden').off();
-    }).removeClass('hidden');
+    });
+    document.querySelector('#download').click(); //jQuery bug
 }
 
 function playerChanged(event) {
@@ -288,7 +282,7 @@ function TitleSwitcher() {
     };
 }
 
-function splitArtistSong(title) {
+function splitArtistSong(title = ["Error"]) {
     let separator = title.indexOf(" - ");
     if (separator != -1) {
         return [title.substring(0, separator), title.substring(separator + 3)];
