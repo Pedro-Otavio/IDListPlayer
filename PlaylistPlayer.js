@@ -25,7 +25,7 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
     addButtonListeners();
 
     if (window.localStorage.getItem('playerData') != null) {
-        loadCookie();
+        window.setTimeout(loadCookie, 1000);
     }
 }
 
