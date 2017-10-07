@@ -23,6 +23,10 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
     });
 
     addButtonListeners();
+
+    if (window.localStorage.getItem('playerData') != null) {
+        loadCookie();
+    }
 }
 
 function resize() {
