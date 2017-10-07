@@ -64,7 +64,7 @@ function addButtonListeners() {
 }
 
 function loadCookie() {
-    let playerData = JSON.parse(document.cookie);
+    let playerData = JSON.parse(window.localStorage.getItem('playerData'));
     ready(playerData);
 }
 
@@ -208,14 +208,12 @@ function toggleMinQuality() {
 }
 
 function saveCookie() {
-    let d = new Date();
-    d.setDate(d.getDate() + 7);
     let playerData = {
         index: index,
         indexArray: indexArray,
         Playlist: playlist
     };
-    document.cookie = JSON.stringify(playerData) + ";expires=" + d.toGMTString();
+    window.localStorage.setItem('playerData', JSON.stringify(playerData));
 }
 
 function saveFile() {
