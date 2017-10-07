@@ -211,7 +211,7 @@ function saveCookie() {
     let playerData = {
         index: index,
         indexArray: indexArray,
-        Playlist: playlist
+        playlist: playlist
     };
     window.localStorage.setItem('playerData', JSON.stringify(playerData));
 }
