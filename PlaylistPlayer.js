@@ -70,7 +70,7 @@ function loadCookie() {
 
 function ready(playerData) {
     playlist = playerData.playlist;
-    indexArray = playerData.indexArray.length > 0 ? playerData.indexArray : [...Array(playlist.length).keys()];
+    indexArray = playerData.indexArray.length != playerData.playlist.length ? [...Array(playlist.length).keys()] : playerData.indexArray;
     max = playerData.playlist.length - 1;
     $('.dataDisabled').prop('disabled', false);
     skipTo(playerData.index);
