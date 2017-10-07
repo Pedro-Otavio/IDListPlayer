@@ -1,8 +1,8 @@
 let player = {};
-let fileReaderObject = new FileReader();
-let fileData = {};
-let indexArray = [];
 let index = 0;
+let indexArray = [];
+let playlist = [];
+let fileReaderObject = new FileReader();
 let max = 0;
 let tSwitcher = new TitleSwitcher(null);
 let qualityOption = false;
@@ -22,10 +22,6 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
         window.setTimeout(resize, 256);
     });
 
-    window.addEventListener('mouseup', function () {
-        $('.btn:focus').blur();
-    });
-
     addButtonListeners();
 }
 
@@ -36,6 +32,7 @@ function resize() {
 }
 
 function addButtonListeners() {
+    $('#loadCookie').click(loadCookie);
     $('#fileInput').change(readFile);
     $('#minQualityToggle').click(toggleMinQuality);
     $('#shuffle').click(shufflePlaylist);
@@ -62,7 +59,22 @@ function addButtonListeners() {
     $('#search').click(function () {
         search($('#searchInput').val());
     });
+    $('#saveCookie').click(saveCookie);
     $('#download').click(saveFile);
+}
+
+function loadCookie() {
+    let playerData = JSON.parse(document.cookie);
+    ready(playerData);
+}
+
+function ready(playerData) {
+    playlist = playerData.playlist;
+    indexArray = playerData.indexArray.length > 0 ? playerData.indexArray : [...Array(playlist.length).keys()];
+    max = playerData.playlist.length - 1;
+    $('.dataDisabled').prop('disabled', false);
+    skipTo(playerData.index);
+    $('#fileInput').val(null);
 }
 
 fileReaderObject.onerror = function (event) {
@@ -71,25 +83,12 @@ fileReaderObject.onerror = function (event) {
 };
 
 fileReaderObject.onload = function (event) {
-    fileData = JSON.parse(event.target.result);
-    ready();
+    let playerData = JSON.parse(event.target.result);
+    ready(playerData);
 };
 
 function readFile() {
     fileReaderObject.readAsText($('#fileInput').prop('files')[0]);
-}
-
-function ready() {
-    indexArray = [...Array(fileData.length).keys()];
-    max = indexArray.length - 1;
-    enableBtns();
-    skipTo(0);
-    $('#fileInput').val(null);
-}
-
-function enableBtns() {
-    $('.dataDisabled').prop('disabled', false).off('mouseenter').off('mouseleave').children('.glyphicon-ban-circle').remove();
-    $('.dataDisabled').children('.glyphicon').removeClass('hidden');
 }
 
 function skipTo(i) {
@@ -99,7 +98,7 @@ function skipTo(i) {
             i = 0;
     }
     setIndex(i);
-    play(fileData[indexArray[index]]);
+    play(playlist[indexArray[index]]);
 }
 
 function setIndex(i) {
@@ -143,9 +142,9 @@ function search(term) {
             return str.includes(term.toLowerCase());
         };
     }
-    for (let i = 0, len = fileData.length; i < len; ++i) {
-        let title = fileData[i].title;
-        let id = fileData[i].id;
+    for (let i = 0, len = playlist.length; i < len; ++i) {
+        let title = playlist[i].title;
+        let id = playlist[i].id;
         if (title == null) {
             title = "Error, missing title";
         }
@@ -170,7 +169,7 @@ function search(term) {
                 </tr>
             `);
             $(`#play-${id}`).click(function () {
-                play(fileData[i]);
+                play(playlist[i]);
             });
         }
     }
@@ -189,7 +188,7 @@ function shuffleArray(arr, len = arr.length, i, k) {
 }
 
 function unshufflePlaylist() {
-    indexArray = [...Array(fileData.length).keys()];
+    indexArray = [...Array(playlist.length).keys()];
     index = (max + 1);
     $('#index').text("0 (Playlist unshuffled)");
 }
@@ -208,17 +207,28 @@ function toggleMinQuality() {
     quality();
 }
 
+function saveCookie() {
+    let d = new Date();
+    d.setDate(d.getDate() + 7);
+    let playerData = {
+        index: index,
+        indexArray: indexArray,
+        Playlist: playlist
+    };
+    document.cookie = JSON.stringify(playerData) + ";expires=" + d.toGMTString();
+}
+
 function saveFile() {
     let dataArr = [];
     for (let i = 0, len = max + 1; i < len; ++i) {
-        dataArr.push(fileData[indexArray[i]]);
+        dataArr.push(playlist[indexArray[i]]);
     }
     let data = JSON.stringify(dataArr);
     let blob = new Blob([data], {
         type: 'application/json'
     });
     let url = window.URL.createObjectURL(blob);
-    $('#hiddenLink').attr('href', url).attr('download', 'ShuffledIDs.json').click(function () {
+    $('#hiddenLink').attr('href', url).attr('download', 'ShuffledPlaylist.json').click(function () {
         window.URL.revokeObjectURL(url);
     });
     document.querySelector('#hiddenLink').click(); //jQuery bug
@@ -277,7 +287,7 @@ function TitleSwitcher() {
         }, 1280);
     };
     this.halt = function () {
-        self.artistSongArray = ["ID List Player"];
+        self.artistSongArray = ["Playlist Player"];
         self.switchArtistSong();
     };
 }
