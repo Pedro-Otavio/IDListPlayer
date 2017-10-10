@@ -221,12 +221,12 @@ function saveCookie() {
 }
 
 function saveFile() {
-    let dataArr = [];
-    for (let i = 0, len = max + 1; i < len; ++i) {
-        dataArr.push(playlist[indexArray[i]]);
-    }
-    let data = JSON.stringify(dataArr);
-    let blob = new Blob([data], {
+    let playerData = {
+        index: index,
+        indexArray: indexArray,
+        playlist: playlist
+    };
+    let blob = new Blob([JSON.stringify(playerData)], {
         type: 'application/json'
     });
     let url = window.URL.createObjectURL(blob);
