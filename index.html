@@ -57,16 +57,6 @@
                 </button>
             </div>
         </div>
-        <div id="searchResultContainer" hidden>
-            <div class="d-1"></div>
-            <div class="row center">
-                <div class="col-md-6 col-md-offset-3">
-                    <table class="table table-minimal">
-                        <tbody id="searchResultTable"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
         <div class="d-1"></div>
         <div class="row center">
             <div class="col-md-6 col-md-offset-3">
@@ -85,10 +75,32 @@
                 <button id="unshuffle" title="Unshuffle" class="btn dataDisabled" disabled>
                     <span class="glyphicon glyphicon-cd"></span>
                 </button>
+                <b>&nbsp;-&nbsp;</b>
+                <button id="togglePlaylistVisibility" title="Show/hide playlist" class="btn dataDisabled" disabled>
+                    <span class="glyphicon glyphicon-list"></span>
+                </button>
                 <b>&nbsp;|&nbsp;</b>
                 <button id="minQualityToggle" title="Toggle minimum quality mode" class="btn">
                     <span class="glyphicon glyphicon-hd-video"></span>
                 </button>
+            </div>
+        </div>
+        <div id="playlistContainer" hidden>
+            <div class="d-2"></div>
+            <div class="row center">
+                <div class="col-md-12">
+                    <button id="refresh" title="Refresh" class="btn">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="d-1"></div>
+            <div class="row center">
+                <div class="col-md-6 col-md-offset-3">
+                    <table class="table table-minimal">
+                        <tbody id="playlistTable"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="d-2"></div>
@@ -103,10 +115,10 @@
                     <a id="hiddenLink" class="hidden"></a>
                 </button>
                 <b>&nbsp;|&nbsp;</b>
-                <button id="loadCookie" title="Load cookie" class="btn">
+                <button id="storageLoad" title="Quck load" class="btn">
                     <span class="glyphicon glyphicon-cloud"></span>
                 </button>
-                <button id="saveCookie" title="Save cookie" class="btn dataDisabled" disabled>
+                <button id="storageSave" title="Quick save" class="btn dataDisabled" disabled>
                     <span class="glyphicon glyphicon-cloud-upload"></span>
                 </button>
             </div>

@@ -1,9 +1,10 @@
 let player = {};
-let index = 0;
-let indexArray = [];
 let playlist = [];
-let fileReaderObject = new FileReader();
+let index = 0;
 let max = 0;
+let playlistVisibility = false;
+let indexArray = [];
+let fileReaderObject = new FileReader();
 let tSwitcher = new TitleSwitcher(null);
 let qualityOption = false;
 let currentVideoMimumQuality = false;
@@ -25,7 +26,7 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
     addButtonListeners();
 
     if (window.localStorage.getItem('playerData') != null) {
-        window.setTimeout(loadCookie, 1000);
+        window.setTimeout(storageLoad, 1000);
     }
 }
 
@@ -36,8 +37,12 @@ function resize() {
 }
 
 function addButtonListeners() {
-    $('#loadCookie').click(loadCookie);
+    $('#storageLoad').click(storageLoad);
     $('#fileInput').change(readFile);
+    $('#togglePlaylistVisibility').click(togglePlaylistVisibility);
+    $('#refresh').click(function () {
+        search("");
+    });
     $('#minQualityToggle').click(toggleMinQuality);
     $('#shuffle').click(shufflePlaylist);
     $('#unshuffle').click(unshufflePlaylist);
@@ -63,11 +68,11 @@ function addButtonListeners() {
     $('#search').click(function () {
         search($('#searchInput').val());
     });
-    $('#saveCookie').click(saveCookie);
+    $('#storageSave').click(storageSave);
     $('#download').click(saveFile);
 }
 
-function loadCookie() {
+function storageLoad() {
     let playerData = JSON.parse(window.localStorage.getItem('playerData'));
     ready(playerData);
 }
@@ -116,7 +121,6 @@ function setIndex(i) {
 }
 
 function play(vidObj) {
-    $('#searchResultContainer').hide();
     tSwitcher.halt();
     currentVideoMimumQuality = false;
     player.loadVideoById(vidObj.id);
@@ -132,9 +136,25 @@ function previous() {
     skipTo(index - 1);
 }
 
+function togglePlaylistVisibility() {
+    playlistVisibility = !playlistVisibility;
+    if (playlistVisibility) {
+        showPlaylist();
+    } else {
+        hidePlaylist();
+    }
+}
+
+function showPlaylist() {
+    $('#playlistContainer').show();
+    $('#togglePlaylistVisibility').addClass('off');
+}
+
 function search(term) {
-    $('#searchResultTable').empty();
-    $('#searchResultContainer').show();
+    $('#playlistTable').empty();
+    if (!playlistVisibility) {
+        togglePlaylistVisibility();
+    }
     let match;
     if (term.indexOf("/") == 0) {
         let pattern = new RegExp(term.substring(1), 'i');
@@ -153,7 +173,7 @@ function search(term) {
             title = "Error, missing title";
         }
         if (match(title.toLowerCase())) {
-            $('#searchResultTable').append(`
+            $('#playlistTable').append(`
                 <tr>
                     <td>
                         <div style="width: 5.5em;">
@@ -177,6 +197,11 @@ function search(term) {
             });
         }
     }
+}
+
+function hidePlaylist() {
+    $('#playlistContainer').hide();
+    $('#togglePlaylistVisibility').removeClass('off');
 }
 
 function shufflePlaylist() {
@@ -211,7 +236,7 @@ function toggleMinQuality() {
     quality();
 }
 
-function saveCookie() {
+function storageSave() {
     let playerData = {
         index: index,
         indexArray: indexArray,
