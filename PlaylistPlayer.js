@@ -177,9 +177,9 @@ function search(term) {
                 <tr>
                     <td>
                         <div style="width: 5.5em;">
-                            <h4 title="index in source file">${(i + 1)}</h4>
+                            <h4 title="index in source file">${((String)(i + 1)).padStart(3,"00")}</h4>
                             <h4>-</h4>
-                            <h4 title="index in current playlist">${(indexArray.indexOf(i) + 1)}</h4>
+                            <h4 title="index in current playlist">${((String)(indexArray.indexOf(i) + 1)).padStart(3,"00")}</h4>
                         </div>
                     </td>
                     <td>
