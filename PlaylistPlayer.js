@@ -176,11 +176,7 @@ function search(term) {
             $('#playlistTable').append(`
                 <tr>
                     <td>
-                        <div style="width: 5.5em;">
-                            <h4 title="index in source file">${((String)(i + 1)).padStart(3,"00")}</h4>
-                            <h4>-</h4>
-                            <h4 title="index in current playlist">${((String)(indexArray.indexOf(i) + 1)).padStart(3,"00")}</h4>
-                        </div>
+                        <h4>${((String)(indexArray.indexOf(i) + 1)).padStart(3,"00")}</h4>
                     </td>
                     <td>
                         <h4>${title}</h4>
