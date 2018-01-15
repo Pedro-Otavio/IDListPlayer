@@ -1,16 +1,18 @@
-let player = {};
-let playlist = [];
-let index = 0;
-let max = 0;
-let playlistVisibility = false;
-let indexArray = [];
-let fileReaderObject = new FileReader();
-let tSwitcher = new TitleSwitcher(null);
-let qualityOption = false;
-let currentVideoMimumQuality = false;
+var YTPlayer = {};
+var PLData = {
+    playlist: [],
+    indexArray: [],
+    index: 0,
+    time: 0
+};
+var max = 0;
+var playlistVisibility = false;
+var fileReaderObject = new FileReader();
+var qualityOption = false;
+var currentVideoMimumQuality = false;
 
 function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
-    player = new YT.Player('player', {
+    YTPlayer = new YT.Player('player', {
         events: {
             'onStateChange': playerChanged,
             'onPlaybackQualityChange': quality
@@ -25,7 +27,7 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
 
     addButtonListeners();
 
-    if (window.localStorage.getItem('playerData') != null) {
+    if (window.localStorage.getItem('autoPLData') !== null) {
         window.setTimeout(storageLoad, 1000);
     }
 }
@@ -35,6 +37,10 @@ function resize() {
     let h = Math.floor(w * 9 / 16);
     $('#player').attr('width', w).attr('height', h);
 }
+
+window.onbeforeunload = function () {
+    window.localStorage.setItem('autoPLData', JSON.stringify(PLData));
+};
 
 function addButtonListeners() {
     $('#storageLoad').click(storageLoad);
@@ -73,16 +79,15 @@ function addButtonListeners() {
 }
 
 function storageLoad() {
-    let playerData = JSON.parse(window.localStorage.getItem('playerData'));
-    ready(playerData);
+    ready(JSON.parse(window.localStorage.getItem('PLData')));
 }
 
-function ready(playerData) {
-    playlist = playerData.playlist;
-    indexArray = playerData.indexArray.length != playerData.playlist.length ? [...Array(playlist.length).keys()] : playerData.indexArray;
-    max = playerData.playlist.length - 1;
+function ready(PLData) {
+    PLData.playlist = this.PLData.playlist;
+    PLData.indexArray = this.PLData.indexArray.length != PLData.playlist.length ? [...Array(PLData.playlist.length).keys()] : PLData.indexArray;
+    max = PLData.playlist.length - 1;
     $('.dataDisabled').prop('disabled', false);
-    skipTo(playerData.index);
+    skipTo(PLData.index);
     $('#fileInput').val(null);
 }
 
@@ -92,8 +97,7 @@ fileReaderObject.onerror = function (event) {
 };
 
 fileReaderObject.onload = function (event) {
-    let playerData = JSON.parse(event.target.result);
-    ready(playerData);
+    ready(JSON.parse(event.target.result));
 };
 
 function readFile() {
@@ -107,33 +111,33 @@ function skipTo(i) {
             i = 0;
     }
     setIndex(i);
-    play(playlist[indexArray[index]]);
+    play(PLData.playlist[PLData.indexArray[PLData.index]]);
 }
 
 function setIndex(i) {
-    index = i;
-    if (index < 0) {
-        index = max;
-    } else if (index > max) {
-        index = 0;
+    PLData.index = i;
+    if (PLData.index < 0) {
+        PLData.index = max;
+    } else if (PLData.index > max) {
+        PLData.index = 0;
     }
-    $('#index').text(index + 1);
+    $('#index').text(PLData.index + 1);
 }
 
 function play(vidObj) {
     tSwitcher.halt();
     currentVideoMimumQuality = false;
-    player.loadVideoById(vidObj.id);
+    YTPlayer.loadVideoById(vidObj.id);
     tSwitcher.artistSongArray = splitArtistSong(vidObj.title);
     tSwitcher.begin();
 }
 
 function next() {
-    skipTo(index + 1);
+    skipTo(PLData.index + 1);
 }
 
 function previous() {
-    skipTo(index - 1);
+    skipTo(PLData.index - 1);
 }
 
 function togglePlaylistVisibility() {
@@ -166,9 +170,9 @@ function search(term) {
             return str.includes(term.toLowerCase());
         };
     }
-    for (let i = 0, len = playlist.length; i < len; ++i) {
-        let title = playlist[i].title;
-        let id = playlist[i].id;
+    for (let i = 0, len = PLData.playlist.length; i < len; ++i) {
+        let title = PLData.playlist[i].title;
+        let id = PLData.playlist[i].id;
         if (title == null) {
             title = "Error, missing title";
         }
@@ -176,7 +180,7 @@ function search(term) {
             $('#playlistTable').append(`
                 <tr>
                     <td>
-                        <h4>${((String)(indexArray.indexOf(i) + 1)).padStart(3,"00")}</h4>
+                        <h4>${((String)(PLData.indexArray.indexOf(i) + 1)).padStart(3,"00")}</h4>
                     </td>
                     <td>
                         <h4>${title}</h4>
@@ -189,7 +193,7 @@ function search(term) {
                 </tr>
             `);
             $(`#play-${id}`).click(function () {
-                play(playlist[i]);
+                play(PLData.playlist[i]);
             });
         }
     }
@@ -201,27 +205,33 @@ function hidePlaylist() {
 }
 
 function shufflePlaylist() {
-    shuffleArray(indexArray);
-    index = (max + 1);
+    shuffleArray(PLData.indexArray);
+    PLData.index = (max + 1);
     $('#index').text("0 (Playlist shuffled)");
 }
 
 let rnd = Math.random;
 
-function shuffleArray(arr, len = arr.length, i, k) {
-    while (len) i = rnd() * len-- | 0, k = arr[len], arr[len] = arr[i], arr[i] = k;
+function shuffleArray(arr) {
+    let i, k, len = arr.length;
+    while (len) {
+        i = rnd() * len-- | 0;
+        k = arr[len];
+        arr[len] = arr[i];
+        arr[i] = k;
+    }
 }
 
 function unshufflePlaylist() {
-    indexArray = [...Array(playlist.length).keys()];
-    index = (max + 1);
+    PLData.indexArray = [...Array(PLData.playlist.length).keys()];
+    PLData.index = (max + 1);
     $('#index').text("0 (Playlist unshuffled)");
 }
 
 function quality() {
     if (qualityOption && !currentVideoMimumQuality) {
-        player.setPlaybackQuality('small');
-        player.setPlaybackQuality('tiny');
+        YTPlayer.setPlaybackQuality('small');
+        YTPlayer.setPlaybackQuality('tiny');
         currentVideoMimumQuality = true;
     }
 }
@@ -233,21 +243,11 @@ function toggleMinQuality() {
 }
 
 function storageSave() {
-    let playerData = {
-        index: index,
-        indexArray: indexArray,
-        playlist: playlist
-    };
-    window.localStorage.setItem('playerData', JSON.stringify(playerData));
+    window.localStorage.setItem('PLData', JSON.stringify(PLData));
 }
 
 function saveFile() {
-    let playerData = {
-        index: index,
-        indexArray: indexArray,
-        playlist: playlist
-    };
-    let blob = new Blob([JSON.stringify(playerData)], {
+    let blob = new Blob([JSON.stringify(PLData)], {
         type: 'application/json'
     });
     let url = window.URL.createObjectURL(blob);
@@ -260,7 +260,7 @@ function saveFile() {
 function playerChanged(event) {
     switch (event.data) {
         case YT.PlayerState.UNSTARTED:
-            player.playVideo();
+            YTPlayer.playVideo();
             break;
         case YT.PlayerState.ENDED:
             videoFinished();
@@ -285,35 +285,6 @@ function videoPlaying() {
     quality();
 }
 
-function TitleSwitcher() {
-    let self = this;
-    this.id = null;
-    this.artistSongArray = [0];
-    this.i = 0;
-    this.switchArtistSong = function () {
-        if (self.artistSongArray.length > 1) {
-            $('title').text(self.artistSongArray[self.i]);
-            ++(self.i);
-            if (self.i >= self.artistSongArray.length) {
-                self.i = 0;
-            }
-        } else {
-            $('title').text(self.artistSongArray[0]);
-            window.clearInterval(self.t);
-        }
-        self.titleIs0 = !self.titleIs0;
-    };
-    this.begin = function () {
-        $('title').text(self.artistSongArray[0]);
-        self.t = window.setInterval(function () {
-            self.switchArtistSong();
-        }, 1280);
-    };
-    this.halt = function () {
-        self.artistSongArray = ["Playlist Player"];
-        self.switchArtistSong();
-    };
-}
 
 function splitArtistSong(title = ["Error"]) {
     let separator = title.indexOf(" - ");
@@ -323,3 +294,38 @@ function splitArtistSong(title = ["Error"]) {
         return [title];
     }
 }
+
+class TitleSwitcher {
+    constructor() {
+        this.artistSongArray = [0];
+        this.i = 0;
+        this.t = 0;
+        this.titleIs0 = false;
+        this.title = $('title');
+    }
+    switchArtistSong() {
+        if (this.artistSongArray.length > 1) {
+            this.title.text(this.artistSongArray[this.i]);
+            ++(this.i);
+            if (this.i >= this.artistSongArray.length) {
+                this.i = 0;
+            }
+        } else {
+            this.title.text(this.artistSongArray[0]);
+            window.clearInterval(this.t);
+        }
+        this.titleIs0 = !this.titleIs0;
+    }
+    begin() {
+        this.title.text(this.artistSongArray[0]);
+        this.t = window.setInterval(function () {
+            this.switchArtistSong();
+        }, 1280);
+    }
+    halt() {
+        this.artistSongArray = ["Playlist Player"];
+        this.title.text(this.artistSongArray[0]);
+        window.clearInterval(this.t);
+    }
+}
+var tSwitcher = new TitleSwitcher();
