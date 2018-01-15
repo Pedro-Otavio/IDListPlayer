@@ -313,7 +313,9 @@ class TitleSwitcher {
     }
     begin() {
         this.title.text(this.artistSongArray[0]);
-        this.t = window.setInterval(switchArtistSong, 1280);
+        this.t = window.setInterval(function () {
+            switchArtistSong(this);
+        }, 1280);
     }
     halt() {
         this.artistSongArray = ["Playlist Player"];
