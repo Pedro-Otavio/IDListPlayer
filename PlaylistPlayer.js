@@ -309,9 +309,9 @@ var TSInfo = {
     s: false
 };
 
-let title = $('title');
+var title = $('title');
 
 function switchTitle() {
-    title.text = TSInfo.a_s[TSInfo.s ? 0 : 1];
+    title.text(TSInfo.a_s[TSInfo.s ? 0 : 1]);
     TSInfo.s = !TSInfo.s;
 }
