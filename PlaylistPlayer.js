@@ -85,11 +85,11 @@ function storageLoad() {
     ready(JSON.parse(window.localStorage.getItem('PLData')));
 }
 
-function ready(PLData) {
-    if (this.PLData === null)
+function ready(newPLData) {
+    if (newPLData === null)
         return;
-    PLData.playlist = this.PLData.playlist;
-    PLData.indexArray = this.PLData.indexArray.length != PLData.playlist.length ? [...Array(PLData.playlist.length).keys()] : PLData.indexArray;
+    PLData.playlist = newPLData.playlist;
+    PLData.indexArray = newPLData.indexArray.length != PLData.playlist.length ? [...Array(PLData.playlist.length).keys()] : PLData.indexArray;
     max = PLData.playlist.length - 1;
     $('.dataDisabled').prop('disabled', false);
     skipTo(PLData.index);
