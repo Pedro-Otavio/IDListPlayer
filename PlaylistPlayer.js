@@ -22,6 +22,8 @@ var options = {
     autoLoading: false
 };
 
+let x;
+
 (function () {
     let op = JSON.parse(window.localStorage.getItem('options'));
     if ($.isEmptyObject(JSON.parse(window.localStorage.getItem('options'))))
@@ -74,6 +76,8 @@ function resize() {
 }
 
 window.onbeforeunload = function () {
+    if (x === true)
+        saveFile();
     window.localStorage.setItem('options', JSON.stringify(options));
     if (!options.autoSaving || !initialized)
         return;
