@@ -89,7 +89,7 @@ function ready(PLData) {
     if (this.PLData === null)
         return;
     PLData.playlist = this.PLData.playlist;
-    PLData.indexArray = this.PLData.indexArray.length != PLData.playlist.length ? [...Array(PLData.playlist.length).keys()] : PLData.indexArray;
+    PLData.indexArray = this.PLData.indexArray.length != this.PLData.playlist.length ? [...Array(this.PLData.playlist.length).keys()] : this.PLData.indexArray;
     max = PLData.playlist.length - 1;
     $('.dataDisabled').prop('disabled', false);
     skipTo(PLData.index);
