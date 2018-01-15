@@ -3,9 +3,8 @@ var PLData = {
     playlist: [],
     indexArray: [],
     index: 0,
-    time: 0
+    time: -1
 };
-PLData = null;
 var max = 0;
 var playlistVisibility = false;
 var fileReaderObject = new FileReader();
@@ -29,7 +28,8 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
 
     addButtonListeners();
 
-    if (window.localStorage.getItem('autoPLData') !== null) {
+    let auto = window.localStorage.getItem('autoPLData');
+    if (auto !== null) {
         window.setTimeout(storageLoad, 1000);
     }
 }
@@ -41,7 +41,7 @@ function resize() {
 }
 
 window.onbeforeunload = function () {
-    if (PLData !== null)
+    if (PLData.time !== -1)
         window.localStorage.setItem('autoPLData', JSON.stringify(PLData));
 };
 
@@ -85,11 +85,11 @@ function storageLoad() {
     ready(JSON.parse(window.localStorage.getItem('PLData')));
 }
 
-function ready(newPLData) {
-    if (newPLData === null)
+function ready(PLData) {
+    if (this.PLData === null)
         return;
-    PLData.playlist = newPLData.playlist;
-    PLData.indexArray = newPLData.indexArray.length != PLData.playlist.length ? [...Array(PLData.playlist.length).keys()] : PLData.indexArray;
+    PLData.playlist = this.PLData.playlist;
+    PLData.indexArray = this.PLData.indexArray.length != PLData.playlist.length ? [...Array(PLData.playlist.length).keys()] : PLData.indexArray;
     max = PLData.playlist.length - 1;
     $('.dataDisabled').prop('disabled', false);
     skipTo(PLData.index);
@@ -248,10 +248,13 @@ function toggleMinQuality() {
 }
 
 function storageSave() {
-    window.localStorage.setItem('PLData', JSON.stringify(PLData));
+    if (PLData.time !== -1)
+        window.localStorage.setItem('PLData', JSON.stringify(PLData));
 }
 
 function saveFile() {
+    if (PLData.time === -1)
+        return;
     let blob = new Blob([JSON.stringify(PLData)], {
         type: 'application/json'
     });
@@ -293,7 +296,7 @@ function videoPlaying() {
 
 function splitArtistSong(title = ["Error"]) {
     let separator = title.indexOf(" - ");
-    if (separator != -1) {
+    if (separator !== -1) {
         return [title.substring(0, separator), title.substring(separator + 3)];
     } else {
         return [title];
