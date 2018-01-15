@@ -39,7 +39,8 @@ function resize() {
 }
 
 window.onbeforeunload = function () {
-    window.localStorage.setItem('autoPLData', JSON.stringify(PLData));
+    if (PLData !== null)
+        window.localStorage.setItem('autoPLData', JSON.stringify(PLData));
 };
 
 function addButtonListeners() {
@@ -83,6 +84,8 @@ function storageLoad() {
 }
 
 function ready(PLData) {
+    if (this.PLData === null)
+        return;
     PLData.playlist = this.PLData.playlist;
     PLData.indexArray = this.PLData.indexArray.length != PLData.playlist.length ? [...Array(PLData.playlist.length).keys()] : PLData.indexArray;
     max = PLData.playlist.length - 1;
