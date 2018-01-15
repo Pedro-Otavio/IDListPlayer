@@ -305,12 +305,11 @@ function splitArtistSong(title = ["Error"]) {
 
 class TitleSwitcher {
     constructor() {
-        this.artistSongArray = [0];
+        this.artistSongArray = [];
         this.i = 0;
         this.t = 0;
         this.titleIs0 = false;
         this.title = $('title');
-        this.self = this;
     }
     switchArtistSong() {
         if (this.artistSongArray.length > 1) {
@@ -327,9 +326,7 @@ class TitleSwitcher {
     }
     begin() {
         this.title.text(this.artistSongArray[0]);
-        this.t = window.setInterval(function () {
-            self.switchArtistSong();
-        }, 1280);
+        this.t = window.setInterval(this.switchArtistSong, 1280);
     }
     halt() {
         this.artistSongArray = ["Playlist Player"];
