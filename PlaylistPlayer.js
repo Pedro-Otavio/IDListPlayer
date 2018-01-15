@@ -22,7 +22,7 @@ var options = {
     autoLoading: false
 };
 
-let x = false;
+let x;
 
 (function () {
     let op = JSON.parse(window.localStorage.getItem('options'));
@@ -76,20 +76,13 @@ function resize() {
 }
 
 window.onbeforeunload = function () {
-    if (x && initialized) {
-        PLData.time = YTPlayer.getCurrentTime();
-        let blob = new Blob([JSON.stringify(PLData)], {
-            type: 'application/json'
-        });
-        let url = window.URL.createObjectURL(blob);
-        $('#hiddenLink').attr('target', '_blank').attr('href', url).attr('download', 'CurrentPlaylist.json');
-        document.querySelector('#hiddenLink').click();
-    }
     window.localStorage.setItem('options', JSON.stringify(options));
     if (!options.autoSaving || !initialized)
         return;
     PLData.time = YTPlayer.getCurrentTime();
     window.localStorage.setItem('autoPLData', JSON.stringify(PLData));
+    if (x)
+        event.returnValue = YTPlayer.getCurrentTime();
 };
 
 function addListeners() {
@@ -328,7 +321,11 @@ function saveFile() {
         type: 'application/json'
     });
     let url = window.URL.createObjectURL(blob);
-    $('#hiddenLink').attr('target', '_blank').attr('href', url).attr('download', 'CurrentPlaylist.json');
+    $('#hiddenLink').attr('target', '_blank').attr('href', url).attr('download', 'CurrentPlaylist.json').click(
+        function () {
+            window.URL.revokeObjectURL(url);
+        }
+    );
     document.querySelector('#hiddenLink').click(); //jQuery bug
 }
 
