@@ -23,7 +23,7 @@ var options = {
 };
 
 (function () {
-    op = JSON.parse(window.localStorage.getItem('options'));
+    let op = JSON.parse(window.localStorage.getItem('options'));
     if ($.isEmptyObject(JSON.parse(window.localStorage.getItem('options'))))
         return;
     options = op;
@@ -31,7 +31,7 @@ var options = {
     $('#autoSaveToggle').toggleClass('off');
     if (options.autoLoading == true)
     $('#autoLoadToggle').toggleClass('off');
-})()
+})();
 
 function toggleAutoSaving() {
     options.autoSaving = !options.autoSaving;
@@ -62,7 +62,7 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
         let auto = window.localStorage.getItem('autoPLData');
         if (!$.isEmptyObject(auto))
             window.setTimeout(function () {
-                ready(JSON.parse(auto))
+                ready(JSON.parse(auto));
             }, 1000);
     }
 }
