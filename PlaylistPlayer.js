@@ -5,6 +5,7 @@ var PLData = {
     index: 0,
     time: 0
 };
+PLData = null;
 var max = 0;
 var playlistVisibility = false;
 var fileReaderObject = new FileReader();
@@ -12,8 +13,6 @@ var qualityOption = false;
 var currentVideoMimumQuality = false;
 
 function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
-
-    PLData = null;
 
     YTPlayer = new YT.Player('YTPlayer', {
         events: {
@@ -38,7 +37,7 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
 function resize() {
     let w = Math.max(Math.min(document.documentElement.clientWidth, 768), 232);
     let h = Math.floor(w * 9 / 16);
-    $('#player').attr('width', w).attr('height', h);
+    $('#YTPlayer').attr('width', w).attr('height', h);
 }
 
 window.onbeforeunload = function () {
