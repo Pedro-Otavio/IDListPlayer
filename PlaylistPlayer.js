@@ -130,11 +130,11 @@ function setIndex(i) {
 }
 
 function play(vidObj) {
-    tSwitcher.halt();
+    window.clearInterval(TSInfo.id);
     currentVideoMimumQuality = false;
     YTPlayer.loadVideoById(vidObj.id);
-    tSwitcher.artistSongArray = splitArtistSong(vidObj.title);
-    tSwitcher.begin();
+    TSInfo.a_s = splitArtistSong(vidObj.title);
+    TSInfo.id = window.setInterval(switchTitle, 1280);
 }
 
 function next() {
@@ -303,39 +303,15 @@ function splitArtistSong(title = ["Error"]) {
     }
 }
 
-class TitleSwitcher {
-    constructor() {
-        this.artistSongArray = [];
-        this.i = 0;
-        this.t = 0;
-        this.titleIs0 = false;
-        this.title = $('title');
-    }
-    begin() {
-        this.title.text(this.artistSongArray[0]);
-        this.t = window.setInterval(function () {
-            switchArtistSong(this);
-        }, 1280);
-    }
-    halt() {
-        this.artistSongArray = ["Playlist Player"];
-        this.title.text(this.artistSongArray[0]);
-        window.clearInterval(this.t);
-    }
-}
+var TSInfo = {
+    id: -1,
+    a_s: [""],
+    s: false
+};
 
-var tSwitcher = new TitleSwitcher();
+let title = $('title');
 
-function switchArtistSong(tSwitcher) {
-    if (tSwitcher.artistSongArray.length > 1) {
-        tSwitcher.title.text(tSwitcher.artistSongArray[tSwitcher.i]);
-        ++(tSwitcher.i);
-        if (tSwitcher.i >= tSwitcher.artistSongArray.length) {
-            tSwitcher.i = 0;
-        }
-    } else {
-        tSwitcher.title.text(tSwitcher.artistSongArray[0]);
-        window.clearInterval(tSwitcher.t);
-    }
-    tSwitcher.titleIs0 = !tSwitcher.titleIs0;
+function switchTitle() {
+    title.text = TSInfo.a_s[TSInfo.s ? 0 : 1];
+    TSInfo.s = !TSInfo.s;
 }
