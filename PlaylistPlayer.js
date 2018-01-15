@@ -12,7 +12,7 @@ var qualityOption = false;
 var currentVideoMimumQuality = false;
 
 function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
-    YTPlayer = new YT.Player('player', {
+    YTPlayer = new YT.Player('YTPlayer', {
         events: {
             'onStateChange': playerChanged,
             'onPlaybackQualityChange': quality
