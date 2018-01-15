@@ -134,6 +134,8 @@ function play(vidObj) {
     currentVideoMimumQuality = false;
     YTPlayer.loadVideoById(vidObj.id);
     TSInfo.a_s = splitArtistSong(vidObj.title);
+    title.text(TSInfo.a_s[0]);
+    TSInfo.s = false;
     TSInfo.id = window.setInterval(switchTitle, 1280);
 }
 
@@ -312,6 +314,6 @@ var TSInfo = {
 var title = $('title');
 
 function switchTitle() {
-    title.text(TSInfo.a_s[TSInfo.s ? 0 : 1]);
+    title.text(TSInfo.a_s[TSInfo.s ? 0 : 1] | "...");
     TSInfo.s = !TSInfo.s;
 }
