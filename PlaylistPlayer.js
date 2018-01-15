@@ -321,9 +321,7 @@ function saveFile() {
         type: 'application/json'
     });
     let url = window.URL.createObjectURL(blob);
-    $('#hiddenLink').attr('target', '_blank').attr('href', url).attr('download', 'CurrentPlaylist.json').click(function () {
-        window.URL.revokeObjectURL(url);
-    });
+    $('#hiddenLink').attr('target', '_blank').attr('href', url).attr('download', 'CurrentPlaylist.json');
     document.querySelector('#hiddenLink').click(); //jQuery bug
 }
 
