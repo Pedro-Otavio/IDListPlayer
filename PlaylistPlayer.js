@@ -310,6 +310,7 @@ class TitleSwitcher {
         this.t = 0;
         this.titleIs0 = false;
         this.title = $('title');
+        this.self = this;
     }
     switchArtistSong() {
         if (this.artistSongArray.length > 1) {
@@ -327,7 +328,7 @@ class TitleSwitcher {
     begin() {
         this.title.text(this.artistSongArray[0]);
         this.t = window.setInterval(function () {
-            this.switchArtistSong();
+            self.switchArtistSong();
         }, 1280);
     }
     halt() {
