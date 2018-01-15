@@ -17,17 +17,15 @@
     <link rel="icon" href="https://raw.githubusercontent.com/Pedro-Otavio/Resources/master/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://pedro-otavio.github.io/Resources/one.css">
     <script src="https://pedro-otavio.github.io/Resources/one.js" type="text/javascript"></script>
-    <script src="PlaylistPlayer.js" type="text/javascript"></script>
 </head>
 
 <body>
     <div class="container fullH">
-        <div class="d-10"></div>
+        <div class="d-2"></div>
         <div class="row center">
             <div class="col-md-12">
-                <h1>Plays playlist files
-                    <a href="https://pedro-otavio.github.io/IDEx/">generated</a> from
-                    <a href="https://www.youtube.com/">youtube</a>
+                <h1>
+                    <a href="https://pedro-otavio.github.io/IDEx/">Step 0</a>
                 </h1>
             </div>
         </div>
@@ -42,12 +40,12 @@
                     <span class="glyphicon glyphicon-arrow-left"></span>
                 </button>
                 <b>&nbsp;-&nbsp;</b>
-                <input id="indexInput" class="form-control threeDigitInput dataDisabled" title="Index or 'R'/'r' for random" disabled>
+                <input id="indexInput" class="form-control threeDigitInput dataDisabled" title="Index or 'r' for random" disabled>
                 <button id="skipTo" title="Skip to that" class="btn dataDisabled" disabled>
                     <span class="glyphicon glyphicon-arrow-up"></span>
                 </button>
                 <b>&nbsp;-&nbsp;</b>
-                <input id="searchInput" class="form-control fiveDigitInput dataDisabled" title="Text or /text for RegExp)" disabled>
+                <input id="searchInput" class="form-control fiveDigitInput dataDisabled" title="\text for RegExp)" disabled>
                 <button id="search" title="Search " class="btn dataDisabled" disabled>
                     <span class="glyphicon glyphicon-search"></span>
                 </button>
@@ -87,7 +85,7 @@
         </div>
         <div id="playlistContainer" hidden>
             <div class="row center">
-                <button id="scrollTop" title="Pierce the heavens!" class="btn" style="position: fixed; right: 20%; bottom: 5%;" onclick="$('html, body').animate({scrollTop:0}, 150);">
+                <button id="scrollTop" title="Pierce the heavens!" class="btn" style="position: fixed; right: 1%; bottom: 1%;" onclick="$('html, body').animate({scrollTop:0}, 150);">
                     <span class="glyphicon glyphicon-chevron-up"></span>
                 </button>
             </div>
@@ -121,20 +119,23 @@
                 </button>
                 <b>&nbsp;|&nbsp;</b>
                 <button id="storageLoad" title="Quck load" class="btn">
-                    <span class="glyphicon glyphicon-cloud"></span>
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
                 </button>
                 <button id="storageSave" title="Quick save" class="btn dataDisabled" disabled>
+                    <span class="glyphicon glyphicon-floppy-open"></span>
+                </button>
+                <b>&nbsp;|&nbsp;</b>
+                <button id="autoSaveToggle" title="Toggle auto-save" class="btn">
+                    <span class="glyphicon glyphicon-cloud-download"></span>
+                </button>
+                <button id="autoLoadToggle" title="Toggle auto-load" class="btn off">
                     <span class="glyphicon glyphicon-cloud-upload"></span>
                 </button>
             </div>
         </div>
-        <div id="errow" class="row center" hidden>
-            <div class="col-md-12">
-                <h2 id="errorMsg" style="color: #FF0000">ERROR</h2>
-            </div>
-        </div>
         <div class="d-2"></div>
     </div>
+    <script src="PlaylistPlayer.js" type="text/javascript"></script>
     <script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
 </body>
 

@@ -5,11 +5,43 @@ var PLData = {
     index: 0,
     time: -1
 };
+let initialized = false;
+var TSInfo = {
+    id: -1,
+    a_s: [],
+    s: false
+};
+var title = $('title');
 var max = 0;
 var playlistVisibility = false;
 var fileReaderObject = new FileReader();
 var qualityOption = false;
 var currentVideoMimumQuality = false;
+var options = {
+    autoSaving: true,
+    autoLoading: false
+};
+
+(function () {
+    op = JSON.parse(window.localStorage.getItem('options'));
+    if ($.isEmptyObject(JSON.parse(window.localStorage.getItem('options'))))
+        return;
+    options = op;
+    if (options.autoSaving == false)
+    $('#autoSaveToggle').toggleClass('off');
+    if (options.autoLoading == true)
+    $('#autoLoadToggle').toggleClass('off');
+})()
+
+function toggleAutoSaving() {
+    options.autoSaving = !options.autoSaving;
+    $('#autoSaveToggle').toggleClass('off');
+}
+
+function toggleAutoLoading() {
+    options.autoLoading = !options.autoLoading;
+    $('#autoLoadToggle').toggleClass('off');
+}
 
 function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
 
@@ -22,15 +54,16 @@ function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
 
     resize();
 
-    window.addEventListener('orientationchange', function () {
-        window.setTimeout(resize, 256);
-    });
+    addListeners();
 
-    addButtonListeners();
-
-    let auto = window.localStorage.getItem('autoPLData');
-    if (auto !== null) {
-        window.setTimeout(storageLoad, 1000);
+    if (!options.autoLoading) {
+        return;
+    } else {
+        let auto = window.localStorage.getItem('autoPLData');
+        if (!$.isEmptyObject(auto))
+            window.setTimeout(function () {
+                ready(JSON.parse(auto))
+            }, 1000);
     }
 }
 
@@ -41,13 +74,19 @@ function resize() {
 }
 
 window.onbeforeunload = function () {
-    if (PLData.time !== -1)
-        window.localStorage.setItem('autoPLData', JSON.stringify(PLData));
+    window.localStorage.setItem('options', JSON.stringify(options));
+    if (!options.autoSaving || !initialized)
+        return;
+    PLData.time = YTPlayer.getCurrentTime();
+    window.localStorage.setItem('autoPLData', JSON.stringify(PLData));
 };
 
-function addButtonListeners() {
+function addListeners() {
+    $(window).resize(resize);
     $('#storageLoad').click(storageLoad);
     $('#fileInput').change(readFile);
+    $('#autoSaveToggle').click(toggleAutoSaving);
+    $('#autoLoadToggle').click(toggleAutoLoading);
     $('#togglePlaylistVisibility').click(togglePlaylistVisibility);
     $('#refresh').click(function () {
         search("");
@@ -86,19 +125,21 @@ function storageLoad() {
 }
 
 function ready(newPLData) {
-    if (newPLData === null)
+    initialized = false;
+    if ($.isEmptyObject(newPLData))
         return;
-    PLData.playlist = newPLData.playlist;
-    PLData.indexArray = newPLData.indexArray.length != newPLData.playlist.length ? [...Array(newPLData.playlist.length).keys()] : newPLData.indexArray;
+    PLData = newPLData;
+    PLData.indexArray = PLData.indexArray.length != PLData.playlist.length ? [...Array(PLData.playlist.length).keys()] : PLData.indexArray;
     max = PLData.playlist.length - 1;
     $('.dataDisabled').prop('disabled', false);
     skipTo(PLData.index);
+    YTPlayer.seekTo(PLData.time != -1 ? PLData.time : 0);
     $('#fileInput').val(null);
+    initialized = true;
 }
 
 fileReaderObject.onerror = function (event) {
-    $('#errorMsg').text("\nFileReader error code " + event.target.error.code + "\n");
-    $('#errow').show();
+    alert("\nFileReader error \"" + event.target.error.code + "\"\n");
 };
 
 fileReaderObject.onload = function (event) {
@@ -110,8 +151,8 @@ function readFile() {
 }
 
 function skipTo(i) {
-    if (typeof i == "string") {
-        i = (i == 'R' || i == 'r' ? Math.floor(Math.random() * max) : (Number(i) - 1));
+    if (typeof i === "string") {
+        i = (i === 'R' || i === 'r' ? Math.floor(Math.random() * max) : (Number(i) - 1));
         if (-2 < i && i < 0)
             i = 0;
     }
@@ -137,6 +178,20 @@ function play(vidObj) {
     title.text(TSInfo.a_s[0]);
     TSInfo.s = false;
     TSInfo.id = window.setInterval(switchTitle, 1280);
+}
+
+function splitArtistSong(title = ["<Missing title>"]) {
+    let separator = title.indexOf(" - ");
+    if (separator !== -1) {
+        return [title.substring(0, separator), title.substring(separator + 3)];
+    } else {
+        return [title];
+    }
+}
+
+function switchTitle() {
+    title.text(TSInfo.a_s[TSInfo.s ? 0 : 1]);
+    TSInfo.s = !TSInfo.s;
 }
 
 function next() {
@@ -167,7 +222,7 @@ function search(term) {
         togglePlaylistVisibility();
     }
     let match;
-    if (term.indexOf("/") == 0) {
+    if (term.indexOf("\\") === 0) {
         let pattern = new RegExp(term.substring(1), 'i');
         match = function (str) {
             return pattern.test(str);
@@ -177,30 +232,28 @@ function search(term) {
             return str.includes(term.toLowerCase());
         };
     }
+    let vidObj = {};
     for (let i = 0, len = PLData.playlist.length; i < len; ++i) {
-        let title = PLData.playlist[i].title;
-        let id = PLData.playlist[i].id;
-        if (title == null) {
-            title = "Error, missing title";
-        }
-        if (match(title.toLowerCase())) {
+        vidObj = PLData.playlist[PLData.indexArray[i]];
+        vidObj.title = vidObj.title || "<Missing title>";
+        if (match(vidObj.title.toLowerCase())) {
             $('#playlistTable').append(`
                 <tr>
                     <td>
-                        <h4>${((String)(PLData.indexArray.indexOf(i) + 1)).padStart(3,"00")}</h4>
+                        <h4>${((String)(i + 1)).padStart(3,"00")}</h4>
                     </td>
                     <td>
-                        <h4>${title}</h4>
+                        <h4>${vidObj.title}</h4>
                     </td>
                     <td>
-                        <button id="play-${id}" title="Play now" class="btn">
+                        <button id="play-${vidObj.id}" title="Play now" class="btn">
                             <span class="glyphicon glyphicon-play"></span>
                         </button>
                     </td>
                 </tr>
             `);
-            $(`#play-${id}`).click(function () {
-                play(PLData.playlist[i]);
+            $(`#play-${vidObj.id}`).click(function () {
+                play(PLData.playlist[PLData.indexArray[i]].id);
             });
         }
     }
@@ -250,13 +303,16 @@ function toggleMinQuality() {
 }
 
 function storageSave() {
-    if (PLData.time !== -1)
-        window.localStorage.setItem('PLData', JSON.stringify(PLData));
+    if (!initialized)
+        return;
+    PLData.time = YTPlayer.getCurrentTime();
+    window.localStorage.setItem('PLData', JSON.stringify(PLData));
 }
 
 function saveFile() {
-    if (PLData.time === -1)
+    if (!initialized)
         return;
+    PLData.time = YTPlayer.getCurrentTime();
     let blob = new Blob([JSON.stringify(PLData)], {
         type: 'application/json'
     });
@@ -293,27 +349,4 @@ function videoFinished() {
 
 function videoPlaying() {
     quality();
-}
-
-
-function splitArtistSong(title = ["Error"]) {
-    let separator = title.indexOf(" - ");
-    if (separator !== -1) {
-        return [title.substring(0, separator), title.substring(separator + 3)];
-    } else {
-        return [title];
-    }
-}
-
-var TSInfo = {
-    id: -1,
-    a_s: [""],
-    s: false
-};
-
-var title = $('title');
-
-function switchTitle() {
-    title.text(TSInfo.a_s[TSInfo.s ? 0 : 1]);
-    TSInfo.s = !TSInfo.s;
 }
