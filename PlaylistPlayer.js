@@ -30,9 +30,9 @@ let x = false;
         return;
     options = op;
     if (options.autoSaving == false)
-    $('#autoSaveToggle').toggleClass('off');
+        $('#autoSaveToggle').toggleClass('off');
     if (options.autoLoading == true)
-    $('#autoLoadToggle').toggleClass('off');
+        $('#autoLoadToggle').toggleClass('off');
 })();
 
 function toggleAutoSaving() {
@@ -76,8 +76,15 @@ function resize() {
 }
 
 window.onbeforeunload = function () {
-    if (x === true)
-        saveFile();
+    if (x && initialized) {
+        PLData.time = YTPlayer.getCurrentTime();
+        let blob = new Blob([JSON.stringify(PLData)], {
+            type: 'application/json'
+        });
+        let url = window.URL.createObjectURL(blob);
+        $('#hiddenLink').attr('target', '_blank').attr('href', url).attr('download', 'CurrentPlaylist.json');
+        document.querySelector('#hiddenLink').click();
+    }
     window.localStorage.setItem('options', JSON.stringify(options));
     if (!options.autoSaving || !initialized)
         return;
