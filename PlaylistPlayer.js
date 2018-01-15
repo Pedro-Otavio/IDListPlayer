@@ -22,7 +22,7 @@ var options = {
     autoLoading: false
 };
 
-let x;
+let x = false;
 
 (function () {
     let op = JSON.parse(window.localStorage.getItem('options'));
