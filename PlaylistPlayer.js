@@ -311,22 +311,9 @@ class TitleSwitcher {
         this.titleIs0 = false;
         this.title = $('title');
     }
-    switchArtistSong() {
-        if (this.artistSongArray.length > 1) {
-            this.title.text(this.artistSongArray[this.i]);
-            ++(this.i);
-            if (this.i >= this.artistSongArray.length) {
-                this.i = 0;
-            }
-        } else {
-            this.title.text(this.artistSongArray[0]);
-            window.clearInterval(this.t);
-        }
-        this.titleIs0 = !this.titleIs0;
-    }
     begin() {
         this.title.text(this.artistSongArray[0]);
-        this.t = window.setInterval(this.switchArtistSong, 1280);
+        this.t = window.setInterval(switchArtistSong, 1280);
     }
     halt() {
         this.artistSongArray = ["Playlist Player"];
@@ -334,4 +321,19 @@ class TitleSwitcher {
         window.clearInterval(this.t);
     }
 }
+
 var tSwitcher = new TitleSwitcher();
+
+function switchArtistSong(tSwitcher) {
+    if (tSwitcher.artistSongArray.length > 1) {
+        tSwitcher.title.text(tSwitcher.artistSongArray[tSwitcher.i]);
+        ++(tSwitcher.i);
+        if (tSwitcher.i >= tSwitcher.artistSongArray.length) {
+            tSwitcher.i = 0;
+        }
+    } else {
+        tSwitcher.title.text(tSwitcher.artistSongArray[0]);
+        window.clearInterval(tSwitcher.t);
+    }
+    tSwitcher.titleIs0 = !tSwitcher.titleIs0;
+}
