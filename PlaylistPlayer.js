@@ -256,7 +256,7 @@ function search(term) {
                     </td>
                 </tr>
             `);
-            $(`#play-${vidObj.id}`).click(function () {
+            $(`#play:${vidObj.id}`).click(function () {
                 play(PLData.playlist[PLData.indexArray[i]]);
             });
         }
