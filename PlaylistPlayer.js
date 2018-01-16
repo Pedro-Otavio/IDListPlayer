@@ -250,13 +250,13 @@ function search(term) {
                         <h4>${vidObj.title}</h4>
                     </td>
                     <td>
-                        <button id="play--${vidObj.id}" title="Play now" class="btn">
+                        <button id="play${vidObj.id}" title="Play now" class="btn">
                             <span class="glyphicon glyphicon-play"></span>
                         </button>
                     </td>
                 </tr>
             `);
-            $('#play--' + vidObj.id}).click(function () {
+            $('#play' + vidObj.id}).click(function () {
                 play(PLData.playlist[PLData.indexArray[i]]);
             });
         }
