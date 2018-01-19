@@ -22,8 +22,6 @@ var options = {
     autoLoading: false
 };
 
-let x;
-
 (function () {
     let op = JSON.parse(window.localStorage.getItem('options'));
     if ($.isEmptyObject(JSON.parse(window.localStorage.getItem('options'))))
@@ -35,38 +33,18 @@ let x;
         $('#autoLoadToggle').toggleClass('off');
 })();
 
-function toggleAutoSaving() {
-    options.autoSaving = !options.autoSaving;
-    $('#autoSaveToggle').toggleClass('off');
-}
-
-function toggleAutoLoading() {
-    options.autoLoading = !options.autoLoading;
-    $('#autoLoadToggle').toggleClass('off');
-}
-
 function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
 
     YTPlayer = new YT.Player('YTPlayer', {
         events: {
+            'onReady': onPlayerReady,
             'onStateChange': playerChanged,
             'onPlaybackQualityChange': quality
         }
     });
 
     resize();
-
     addListeners();
-
-    if (!options.autoLoading) {
-        return;
-    } else {
-        let auto = window.localStorage.getItem('autoPLData');
-        if (!$.isEmptyObject(auto))
-            window.setTimeout(function () {
-                ready(JSON.parse(auto));
-            }, 1000);
-    }
 }
 
 function resize() {
@@ -75,17 +53,24 @@ function resize() {
     $('#YTPlayer').attr('width', w).attr('height', h);
 }
 
-window.onbeforeunload = function () {
-    window.localStorage.setItem('options', JSON.stringify(options));
-    if (!options.autoSaving || !initialized)
+function onPlayerReady() {
+    if (!options.autoLoading) {
         return;
-    PLData.time = YTPlayer.getCurrentTime();
-    window.localStorage.setItem('autoPLData', JSON.stringify(PLData));
-    if (x)
-        event.returnValue = YTPlayer.getCurrentTime();
-};
+    } else {
+        let auto = window.localStorage.getItem('autoPLData');
+        if (!$.isEmptyObject(auto))
+            ready(JSON.parse(auto));
+    }
+}
 
 function addListeners() {
+    window.onbeforeunload = function () {
+        window.localStorage.setItem('options', JSON.stringify(options));
+        if (!options.autoSaving || !initialized)
+            return;
+        PLData.time = YTPlayer.getCurrentTime();
+        window.localStorage.setItem('autoPLData', JSON.stringify(PLData));
+    };
     $(window).resize(resize);
     $('#storageLoad').click(storageLoad);
     $('#fileInput').change(readFile);
@@ -126,6 +111,16 @@ function addListeners() {
 
 function storageLoad() {
     ready(JSON.parse(window.localStorage.getItem('PLData')));
+}
+
+function toggleAutoSaving() {
+    options.autoSaving = !options.autoSaving;
+    $('#autoSaveToggle').toggleClass('off');
+}
+
+function toggleAutoLoading() {
+    options.autoLoading = !options.autoLoading;
+    $('#autoLoadToggle').toggleClass('off');
 }
 
 function ready(newPLData) {
