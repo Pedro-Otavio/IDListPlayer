@@ -24,13 +24,13 @@ var IDLisPlayer = (function () {
     };
 
     let op = JSON.parse(window.localStorage.getItem('options'));
-    if ($.isEmptyObject(JSON.parse(window.localStorage.getItem('options'))))
-        return;
-    options = op;
-    if (options.autoSaving == false)
-        $('#autoSaveToggle').toggleClass('off');
-    if (options.autoLoading == true)
-        $('#autoLoadToggle').toggleClass('off');
+    if (!($.isEmptyObject(JSON.parse(window.localStorage.getItem('options'))))) {
+        options = op;
+        if (options.autoSaving == false)
+            $('#autoSaveToggle').toggleClass('off');
+        if (options.autoLoading == true)
+            $('#autoLoadToggle').toggleClass('off');
+    }
 
     function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
 
