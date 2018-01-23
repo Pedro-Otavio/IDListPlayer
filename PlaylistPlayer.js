@@ -1,4 +1,4 @@
-var IDListPlayer;
+var IDListPlayer = $.isEmptyObject(IDListPlayer) ? false : IDListPlayer;
 
 function start() {
     let YTPlayer = new YT.Player('YTPlayer', {
@@ -353,5 +353,6 @@ function start() {
 }
 
 function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
-    IDListPlayer = start.call({});
+    if (!IDListPlayer)
+        IDListPlayer = start.call({});
 }
