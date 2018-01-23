@@ -1,4 +1,4 @@
-var IDLisPlayer = (function () {
+var IDListPlayer = (function () {
     let YTPlayer = {};
     let PLData = {
         playlist: [],
@@ -355,4 +355,4 @@ var IDLisPlayer = (function () {
     this.YTPlayer = YTPlayer;
     this.options = options;
     return this;
-})();
+}).call({});
