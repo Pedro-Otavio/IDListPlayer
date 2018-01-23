@@ -1,7 +1,60 @@
 var IDListPlayer;
 
 function start() {
-    let YTPlayer = {};
+    let YTPlayer = new YT.Player('YTPlayer', {
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': playerChanged,
+            'onPlaybackQualityChange': quality
+        }
+    });
+
+    resize();
+
+    window.onbeforeunload = function () {
+        window.localStorage.setItem('options', JSON.stringify(options));
+        if (!options.autoSaving || !initialized)
+            return;
+        PLData.time = YTPlayer.getCurrentTime();
+        window.localStorage.setItem('autoPLData', JSON.stringify(PLData));
+    };
+    $(window).resize(resize);
+    $('#storageLoad').click(storageLoad);
+    $('#fileInput').change(readFile);
+    $('#autoSaveToggle').click(toggleAutoSaving);
+    $('#autoLoadToggle').click(toggleAutoLoading);
+    $('#togglePlaylistVisibility').click(togglePlaylistVisibility);
+    $('#refresh').click(function () {
+        search("");
+    });
+    $('#minQualityToggle').click(toggleMinQuality);
+    $('#shuffle').click(shufflePlaylist);
+    $('#unshuffle').click(unshufflePlaylist);
+    $('#next').click(next);
+    $('#previous').click(previous);
+    $('#indexInput').on('keypress', function (e) {
+        if (e.which == 13) {
+            $(this).prop('disabled', true);
+            skipTo($(this).val());
+            $(this).prop('disabled', false).focus();
+        }
+    });
+    $('#skipTo').click(function () {
+        skipTo($('#indexInput').val());
+    });
+    $('#searchInput').on('keypress', function (e) {
+        if (e.which == 13) {
+            $(this).prop('disabled', true);
+            search($(this).val());
+            $(this).prop('disabled', false).focus();
+        }
+    });
+    $('#search').click(function () {
+        search($('#searchInput').val());
+    });
+    $('#storageSave').click(storageSave);
+    $('#download').click(saveFile);
+
     let PLData = {
         playlist: [],
         indexArray: [],
@@ -34,20 +87,6 @@ function start() {
             $('#autoLoadToggle').toggleClass('off');
     }
 
-    function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
-
-        YTPlayer = new YT.Player('YTPlayer', {
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': playerChanged,
-                'onPlaybackQualityChange': quality
-            }
-        });
-
-        resize();
-        addListeners();
-    }
-
     function resize() {
         let w = Math.max(Math.min(document.documentElement.clientWidth, 768), 232);
         let h = Math.floor(w * 9 / 16);
@@ -62,52 +101,6 @@ function start() {
             if (!$.isEmptyObject(auto))
                 ready(JSON.parse(auto));
         }
-    }
-
-    function addListeners() {
-        window.onbeforeunload = function () {
-            window.localStorage.setItem('options', JSON.stringify(options));
-            if (!options.autoSaving || !initialized)
-                return;
-            PLData.time = YTPlayer.getCurrentTime();
-            window.localStorage.setItem('autoPLData', JSON.stringify(PLData));
-        };
-        $(window).resize(resize);
-        $('#storageLoad').click(storageLoad);
-        $('#fileInput').change(readFile);
-        $('#autoSaveToggle').click(toggleAutoSaving);
-        $('#autoLoadToggle').click(toggleAutoLoading);
-        $('#togglePlaylistVisibility').click(togglePlaylistVisibility);
-        $('#refresh').click(function () {
-            search("");
-        });
-        $('#minQualityToggle').click(toggleMinQuality);
-        $('#shuffle').click(shufflePlaylist);
-        $('#unshuffle').click(unshufflePlaylist);
-        $('#next').click(next);
-        $('#previous').click(previous);
-        $('#indexInput').on('keypress', function (e) {
-            if (e.which == 13) {
-                $(this).prop('disabled', true);
-                skipTo($(this).val());
-                $(this).prop('disabled', false).focus();
-            }
-        });
-        $('#skipTo').click(function () {
-            skipTo($('#indexInput').val());
-        });
-        $('#searchInput').on('keypress', function (e) {
-            if (e.which == 13) {
-                $(this).prop('disabled', true);
-                search($(this).val());
-                $(this).prop('disabled', false).focus();
-            }
-        });
-        $('#search').click(function () {
-            search($('#searchInput').val());
-        });
-        $('#storageSave').click(storageSave);
-        $('#download').click(saveFile);
     }
 
     function storageLoad() {
