@@ -1,4 +1,6 @@
-var IDListPlayer = (function () {
+var IDListPlayer;
+
+function start() {
     let YTPlayer = {};
     let PLData = {
         playlist: [],
@@ -355,4 +357,8 @@ var IDListPlayer = (function () {
     this.YTPlayer = YTPlayer;
     this.options = options;
     return this;
-}).call({});
+}
+
+function onYouTubeIframeAPIReady() { //eslint-disable-line no-unused-vars
+    IDListPlayer = start.call({});
+}
