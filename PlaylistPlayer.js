@@ -225,9 +225,8 @@ function start() {
                 return str.includes(term.toLowerCase());
             };
         }
-        let vidObj = {};
         for (let i = 0, len = PLData.playlist.length; i < len; ++i) {
-            vidObj = PLData.playlist[PLData.indexArray[i]];
+            let vidObj = PLData.playlist[PLData.indexArray[i]];
             vidObj.title = vidObj.title || "<Missing title>";
             if (match(vidObj.title.toLowerCase())) {
                 $('#playlistTable').append(`
@@ -246,7 +245,7 @@ function start() {
                     </tr>
                 `);
                 $('#play' + vidObj.id).click(function () {
-                    play(PLData.playlist[PLData.indexArray[i]]);
+                    play(vidObj);
                 });
             }
         }
