@@ -348,6 +348,10 @@ function start() {
     this.PLData = PLData;
     this.YTPlayer = YTPlayer;
     this.options = options;
+    this.big = function () {
+        $(window).resize().off();
+        $('#YTPlayer').attr('width', 1280).attr('height', 720);
+    };
     return this;
 }
 
